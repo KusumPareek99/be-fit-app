@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "844307603187",
+    "project_id": "be-fit-app-2e006",
+    "storage_bucket": "be-fit-app-2e006.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844307603187:android:a911a04957fd35f5d5a186",
+        "android_client_info": {
+          "package_name": "com.example.be_fit_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844307603187-0sei3ub9tv4k31iq0lrfsk1v6bgj21pg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.be_fit_app",
+            "certificate_hash": "9b2ca0d3d5dbfedaa0123dcfeff7a65a8a9400de"
+          }
+        },
+        {
+          "client_id": "844307603187-26abec0mo6tj491a2j8keloj94k6lq0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh7bilR1Gk7XxJ191BRKm-x_qVCvE47U4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844307603187-26abec0mo6tj491a2j8keloj94k6lq0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
