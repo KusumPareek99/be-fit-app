@@ -1,6 +1,7 @@
 import 'package:be_fit_app/screens/forgot_password.dart';
 import 'package:be_fit_app/screens/signup_page.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
+import 'package:be_fit_app/widgets/top_bar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,9 @@ final textFieldFocusNode = FocusNode();
     setState(() {
       isHiddenPassword = !isHiddenPassword;
 
-      if (textFieldFocusNode.hasPrimaryFocus)
-        return; // If focus is on text field, dont unfocus
+      if (textFieldFocusNode.hasPrimaryFocus) {
+        return;
+      } // If focus is on text field, dont unfocus
       textFieldFocusNode.canRequestFocus = false;
       print(isHiddenPassword);
       print(textFieldFocusNode.context);
@@ -54,14 +56,18 @@ final textFieldFocusNode = FocusNode();
                 height: h * 0.01,
               ),
               Container(
-                margin: const EdgeInsets.only(left: 20, right: 20),
+                
                 width: w,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
+                      Container(
+                         width: w,
+                          height: h * 0.15,
+                        child: TopBar()),
                       Container(
                           width: w,
-                          height: h * 0.3,
+                          height: h * 0.2,
                           decoration: const BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
@@ -80,6 +86,7 @@ final textFieldFocusNode = FocusNode();
                         height: h * 0.05,
                       ),
                       Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30),
@@ -113,6 +120,7 @@ final textFieldFocusNode = FocusNode();
                         height: h * 0.02,
                       ),
                       Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(50),
@@ -172,8 +180,9 @@ final textFieldFocusNode = FocusNode();
                           ),
                         ],
                       ),
-                    ]),
-              ),
+      
+                    ],
+                      )        ),
               SizedBox(
                 height: h * 0.02,
               ),

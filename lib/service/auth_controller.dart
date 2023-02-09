@@ -1,5 +1,5 @@
 import 'package:be_fit_app/screens/curved_nav_bar.dart';
-import 'package:be_fit_app/screens/home/home_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,9 +26,9 @@ class AuthController extends GetxController {
   }
 
   static AuthController instance = Get.find();
-  late Rx<User?> _user;
+  late final Rx<User?> _user;
   // email,password,name etc in user
-  FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void onReady() {
@@ -81,7 +81,7 @@ class AuthController extends GetxController {
    void login(String email, password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.snackbar("Logging in", "Succesful login",
+      Get.snackbar("Logging in", "Successful login",
       backgroundColor: Colors.green,
       snackPosition: SnackPosition.BOTTOM,
           titleText: Text(

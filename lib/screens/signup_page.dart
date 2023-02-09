@@ -1,5 +1,9 @@
+import 'package:be_fit_app/constants/const.dart';
+import 'package:be_fit_app/model/user_model.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
+import 'package:be_fit_app/service/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -25,19 +29,22 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
 
-   void hideKeyboard(BuildContext context) {
-      FocusScopeNode currentFocus = FocusScope.of(context);
-      if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      }
+  final userRepo = Get.put(UserRepository());
+
+  void hideKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
     }
+  }
 
   void _togglePasswordView() {
     setState(() {
       isHiddenPassword = !isHiddenPassword;
 
-      if (textFieldFocusNode.hasPrimaryFocus)
-        return; // If focus is on text field, dont unfocus
+      if (textFieldFocusNode.hasPrimaryFocus) {
+        return;
+      } // If focus is on text field, dont unfocus
       textFieldFocusNode.canRequestFocus = false;
       print(isHiddenPassword);
       print(textFieldFocusNode.context);
@@ -47,8 +54,9 @@ class _SignUpPageState extends State<SignUpPage> {
   void _toggleConfirmPasswordView() {
     setState(() {
       isHiddenConfirmPassword = !isHiddenConfirmPassword;
-      if (textFieldFocusNode.hasPrimaryFocus)
-        return; // If focus is on text field, dont unfocus
+      if (textFieldFocusNode.hasPrimaryFocus) {
+        return;
+      } // If focus is on text field, dont unfocus
       textFieldFocusNode.canRequestFocus = false;
       print(isHiddenConfirmPassword);
       print(textFieldFocusNode.context);
@@ -58,13 +66,12 @@ class _SignUpPageState extends State<SignUpPage> {
   bool passwordConfirmMatch() {
     var pass = passwordController.text.trim();
     var confPass = confirmPassController.text.trim();
-    return pass != confPass ? false : true; 
+    return pass != confPass ? false : true;
   }
 
-  Future signUp() async {
-   
-    if ( passwordConfirmMatch()) {
-      bool isregistered = await  AuthController.instance.register(
+  Future signUp(UserModel user) async {
+    if (passwordConfirmMatch()) {
+      bool isregistered = await AuthController.instance.register(
           emailController.text.trim(), passwordController.text.trim());
       if (isregistered) {
         var arr = AuthController.instance.auth.currentUser!.providerData;
@@ -73,29 +80,31 @@ class _SignUpPageState extends State<SignUpPage> {
         String profileImage = isProviderGoogle
             ? AuthController.instance.auth.currentUser!.photoURL!
             : 'assets/images/screen/propic.jpeg';
-        print("${emailController.text.trim()}\n${nameController.text.trim()}\n$profileImage");
-
-       addUserDetails(
-          emailController.text.trim(),
-           nameController.text.trim(),
-            profileImage
-          );
-          }
+        print(
+            "${emailController.text.trim()}\n${nameController.text.trim()}\n$profileImage");
+        userRepo.createUser(user);
+        Get.snackbar('Sign Up Success', 'Message : ',
+          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM,
+          titleText: const Text(
+            "Data stored successfully!",
+            style: TextStyle(color: Colors.white),
+          ));
+        //  addUserDetails(
+        //     emailController.text.trim(),
+        //      nameController.text.trim(),
+        //       profileImage
+        //     );
+      }
     } else {
       Get.snackbar('Password Match', 'message',
           backgroundColor: Colors.redAccent,
           snackPosition: SnackPosition.BOTTOM,
-          titleText: Text(
+          titleText: const Text(
             "Confirm Password and Password does not match",
             style: TextStyle(color: Colors.white),
           ));
     }
-  }
-
-  Future addUserDetails(String email, String name, String profileImage) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .add({'name': name, 'email': email, 'profileImage': profileImage});
   }
 
   @override
@@ -115,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               SizedBox(
@@ -146,7 +155,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               BoxShadow(
                                   blurRadius: 8,
                                   spreadRadius: 5,
-                                  offset: Offset(1, 1),
+                                  offset: const Offset(1, 1),
                                   color: Colors.grey.withOpacity(0.2))
                             ]),
                         height: 65,
@@ -154,18 +163,19 @@ class _SignUpPageState extends State<SignUpPage> {
                           controller: nameController,
                           decoration: InputDecoration(
                               hintText: "Your Name",
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 fontSize: 12,
                               ),
-                              prefixIcon: Icon(Icons.account_circle_outlined,
+                              prefixIcon: const Icon(
+                                  Icons.account_circle_outlined,
                                   color: Color.fromARGB(255, 243, 172, 101)),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -182,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               BoxShadow(
                                   blurRadius: 8,
                                   spreadRadius: 5,
-                                  offset: Offset(1, 1),
+                                  offset: const Offset(1, 1),
                                   color: Colors.grey.withOpacity(0.2))
                             ]),
                         height: 65,
@@ -190,18 +200,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           controller: emailController,
                           decoration: InputDecoration(
                               hintText: "Email ID",
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 fontSize: 12,
                               ),
-                              prefixIcon: Icon(Icons.email_outlined,
+                              prefixIcon: const Icon(Icons.email_outlined,
                                   color: Color.fromARGB(255, 243, 172, 101)),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -218,7 +228,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               BoxShadow(
                                   blurRadius: 8,
                                   spreadRadius: 5,
-                                  offset: Offset(1, 1),
+                                  offset: const Offset(1, 1),
                                   color: Colors.grey.withOpacity(0.2))
                             ]),
                         height: 65,
@@ -231,24 +241,24 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusNode: textFieldFocusNode,
                           decoration: InputDecoration(
                               hintText: "Password",
-                              hintStyle: TextStyle(fontSize: 12),
-                              prefixIcon: Icon(Icons.lock_outline,
+                              hintStyle: const TextStyle(fontSize: 12),
+                              prefixIcon: const Icon(Icons.lock_outline,
                                   color: Color.fromARGB(255, 243, 172, 101)),
                               suffixIcon: IconButton(
                                 icon: isHiddenPassword
-                                    ? Icon(Icons.visibility_off_outlined)
-                                    : Icon(Icons.visibility_outlined),
+                                    ? const Icon(Icons.visibility_off_outlined)
+                                    : const Icon(Icons.visibility_outlined),
                                 onPressed: () {
                                   _togglePasswordView();
                                 },
                               ),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -265,7 +275,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               BoxShadow(
                                   blurRadius: 8,
                                   spreadRadius: 5,
-                                  offset: Offset(1, 1),
+                                  offset: const Offset(1, 1),
                                   color: Colors.grey.withOpacity(0.2))
                             ]),
                         height: 65,
@@ -277,24 +287,24 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                           decoration: InputDecoration(
                               hintText: "Confirm Password",
-                              hintStyle: TextStyle(fontSize: 12),
-                              prefixIcon: Icon(Icons.lock_outline,
+                              hintStyle: const TextStyle(fontSize: 12),
+                              prefixIcon: const Icon(Icons.lock_outline,
                                   color: Color.fromARGB(255, 243, 172, 101)),
                               suffixIcon: IconButton(
                                 icon: isHiddenConfirmPassword
-                                    ? Icon(Icons.visibility_off_outlined)
-                                    : Icon(Icons.visibility_outlined),
+                                    ? const Icon(Icons.visibility_off_outlined)
+                                    : const Icon(Icons.visibility_outlined),
                                 onPressed: () {
                                   _toggleConfirmPasswordView();
                                 },
                               ),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50))),
@@ -313,9 +323,35 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: h * 0.04,
               ),
               GestureDetector(
-                onTap: () {
-                  signUp();
-                  hideKeyboard(context);
+                onTap: ()  {
+                  final user = UserModel(
+                        name: nameController.text.trim(),
+                        email: emailController.text.trim());
+                    signUp(user);
+                 /* print("on tap signup");
+                  bool isregistered = await AuthController.instance.register(
+                      emailController.text.trim(),
+                      passwordController.text.trim());
+                      print("is registered : ${isregistered}");
+                  if (isregistered) {
+                    var arr =
+                        AuthController.instance.auth.currentUser!.providerData;
+                    bool isProviderGoogle =
+                        arr[0].providerId == 'google.com' ? true : false;
+                    String profileImage = isProviderGoogle
+                        ? AuthController.instance.auth.currentUser!.photoURL!
+                        : 'assets/images/screen/propic.jpeg';
+
+                    final user = UserModel(
+                        name: nameController.text.trim(),
+                        email: emailController.text.trim(),
+                        profileImage: profileImage);
+                    signUp(user);
+                    print("Called signup");
+                  }else{
+                    print('Could not register');
+                  }
+                  hideKeyboard(context);*/
                 },
                 child: Container(
                   width: w * 0.62,
@@ -341,12 +377,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: h * 0.01,
               ),
               Row(children: <Widget>[
-                Expanded(child: Divider()),
+                const Expanded(child: Divider()),
                 Text(
                   "  OR  ",
                   style: TextStyle(color: Colors.grey[400]),
                 ),
-                Expanded(child: Divider()),
+                const Expanded(child: Divider()),
               ]),
               SizedBox(
                 height: h * 0.01,
@@ -367,7 +403,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   image: Container(
                     height: 30.0,
                     width: 30.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/Google.png"),
                         fit: BoxFit.cover,
@@ -386,9 +422,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       TextSpan(
                         text: "Login",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
-                          color: Colors.blue,
+                          color: primary,
                           fontWeight: FontWeight.bold,
                         ),
                         recognizer: TapGestureRecognizer()

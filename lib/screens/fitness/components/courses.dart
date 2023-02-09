@@ -1,99 +1,54 @@
 import 'package:be_fit_app/constants/const.dart';
-import 'package:be_fit_app/data/data.dart';
-import 'package:be_fit_app/model/course.dart';
+import 'package:be_fit_app/screens/fitness/components/all_courses.dart';
+
 import 'package:flutter/material.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:youtube_api/youtube_api.dart';
 
+class Courses extends StatefulWidget {
+  @override
+  State<Courses> createState() => _CoursesState();
+}
 
-class Courses extends StatelessWidget {
-  Widget _buildCourses(BuildContext context, int index) {
-    Size size = MediaQuery.of(context).size;
-    Course course = courses[index];
+class _CoursesState extends State<Courses> {
+  static String api_key = "AIzaSyDty54-kp8ifP6Z8x-Huw16RUUhRDdFmXA";
+  List<YouTubeVideo> videoResult = [];
+  YoutubeAPI yt = YoutubeAPI(api_key,
+      maxResults: 6,
+      type:
+          "video"); //instantiating object to call api with maximum videos as 6 and type as video
+  bool isLoaded =
+      false; //this variable lets us to know whether content is loaded or not
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: appPadding, vertical: appPadding / 2),
-      child: Container(
-        height: size.height * 0.25,
-        decoration: BoxDecoration(
-            color: white,
-            borderRadius: BorderRadius.circular(30.0),
-            boxShadow: [
-              BoxShadow(
-                  color: black.withOpacity(0.3),
-                  blurRadius: 30.0,
-                  offset: const Offset(10, 15))
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.all(appPadding),
-          child: Row(
-            children: [
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.2,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Image(
-                    image: AssetImage(course.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: size.width * 0.4,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: appPadding / 2, top: appPadding / 1.5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        course.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        maxLines: 2,
-                      ),
-                      SizedBox(
-                        height: size.height * 0.01,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.folder_open_rounded,color: black.withOpacity(0.3),),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
-                          Text(course.students,style: TextStyle(color: black.withOpacity(0.3),),)
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.height * 0.01,
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.access_time_outlined,color: black.withOpacity(0.3),),
-                          SizedBox(
-                            width: size.width * 0.01,
-                          ),
-                          Text(course.time.toString() + ' min',style: TextStyle(color: black.withOpacity(0.3),),)
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+  callApi() async {
+    try {
+      videoResult = await yt.search(
+          "10 minute daily yoga "); //searching for videos related to 10 minute daily yoga
+      print(videoResult); //logging results in console
+      setState(() {
+        isLoaded = true; //setting content as loaded
+      });
+    } catch (e) {
+      print(
+          e); //in case of any exception like no internet or problem with API log it to console
+    }
   }
 
   @override
+  void initState() {
+    super.initState();
+    callApi(); //calling async api function to get the  data from API
+  }
+
+//mainAxisSize to MainAxisSize.min and using FlexFit.loose fits
+  @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Expanded(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -102,33 +57,157 @@ class Courses extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children:  [
                 const Text(
                   'Courses',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
-                   
                   ),
                 ),
-                const Text(
-                  'See All',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: primary),
+                Material(
+                  child: InkWell(
+                    onTap: (() {
+                      
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AllCourses()),
+                );
+                    }),
+                    child: const Text(
+                      'See All',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: primary),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          Expanded(
-              child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: courses.length,
-            itemBuilder: (context, index) {
-              return _buildCourses(context, index);
-            },
-          ))
+          isLoaded
+              ? Flexible(
+                  fit: FlexFit.loose,
+                  child: ListView.builder(
+                    itemCount: videoResult.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          //launch url
+                          String url = videoResult[index].url;
+                           if (await launchUrlString(url)) {
+                        await launchUrlString(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                          print("Launching URL ...");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(appPadding*0.7),
+                          child: Container(
+                            height: size.height * 0.28,
+                  
+                            decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.circular(30.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: black.withOpacity(0.3),
+                                      blurRadius: 30.0,
+                                      offset: const Offset(10, 15))
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: appPadding,
+                                     ),
+                                  child: Container(
+                                    width: size.width * 0.3,
+                                    height: size.height * 0.5,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(28),
+                                          topRight: Radius.circular(28)),
+                                      child: Image.network(
+                                        videoResult[index]
+                                                .thumbnail
+                                                .medium
+                                                .url ??
+                                            '',
+                                        
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: size.width * 0.4,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        videoResult[index].channelTitle,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                        maxLines: 2,
+                                      ),
+                                     SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Text(
+                                        videoResult[index].title,
+                                        style: TextStyle(
+                                          color: black.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.access_time_outlined,
+                                            color: black.withOpacity(0.3),
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          Text(
+                                            '${videoResult[index]
+                                                    .duration} min',
+                                            style: TextStyle(
+                                              color: black.withOpacity(0.3),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : const Center(
+                  child: SleekCircularSlider(
+                    appearance: CircularSliderAppearance(
+                      spinnerMode: true,
+                      size: 40,
+                    ),
+                  ),
+                )
         ],
       ),
     );

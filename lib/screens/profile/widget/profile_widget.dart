@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -21,16 +22,14 @@ class ProfileWidget extends StatelessWidget {
     final color = Theme.of(context).colorScheme.primary;
 
     return Container(
-      margin: EdgeInsets.only(top: 15),
-      padding: EdgeInsets.only(top: 20),
-      width: MediaQuery.of(context).size.width * 0.95,
-      decoration: BoxDecoration(
-         
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      margin: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width * 0.98,
+     
       child: Center(
         child: Stack(children: [
-          buildImage(),
+          buildCircle(child: buildImage(), all: 4, color: primary),
+          //buildImage(),
           Positioned(bottom: 0, right: 4, child: buildEditIcon(color)),
         ]),
       ),
@@ -48,8 +47,8 @@ class ProfileWidget extends StatelessWidget {
         child: Ink.image(
           image: image as ImageProvider,
           fit: BoxFit.cover,
-          width: 128,
-          height: 128,
+          width: 130,
+          height: 130,
           child: InkWell(
             onTap: onClicked,
           ),

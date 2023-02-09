@@ -41,8 +41,8 @@ class _WaterReminderState extends State<WaterReminder> {
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
         body:Container(
-           padding: const EdgeInsets.only(top: appPadding * 2),
-           margin: const EdgeInsets.only(left: 8.0),
+           padding: const EdgeInsets.only(top: appPadding * 1.4),
+          
         child: Column(
          
           children: [

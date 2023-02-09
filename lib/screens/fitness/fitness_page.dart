@@ -1,6 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/screens/fitness/components/courses.dart';
 import 'package:be_fit_app/screens/fitness/components/diff_styles.dart';
+
 import 'package:be_fit_app/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -22,12 +25,13 @@ class _FitnessPageState extends State<FitnessPage> {
       backgroundColor: Colors.white,
       extendBody: true,
       body: Padding(
-        padding: const EdgeInsets.only(top: appPadding * 2),
+        padding: const EdgeInsets.only(top: appPadding * 1.4),
         child: Column(
           children: [
-            CustomAppBar(),
+            
             DiffStyles(),
             Courses(),
+        
           ],
         ),
       ),
