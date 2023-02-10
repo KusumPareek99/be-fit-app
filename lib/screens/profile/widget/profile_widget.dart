@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'dart:io';
 
 import 'package:be_fit_app/constants/const.dart';
@@ -29,7 +31,7 @@ class ProfileWidget extends StatelessWidget {
       child: Center(
         child: Stack(children: [
           buildCircle(child: buildImage(), all: 4, color: primary),
-          //buildImage(),
+         
           Positioned(bottom: 0, right: 4, child: buildEditIcon(color)),
         ]),
       ),
@@ -37,15 +39,15 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = imagePath.contains('https://')
+    final  image = imagePath.contains('https://')
         ? NetworkImage(imagePath)
-        : imagePath.contains('assets/')  ? AssetImage(imagePath) : FileImage(File(imagePath));
-
+        : imagePath.contains('assets/')  ? AssetImage(imagePath) as ImageProvider : FileImage(File(imagePath)); 
+       
     return ClipOval(
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
-          image: image as ImageProvider,
+          image: image,
           fit: BoxFit.cover,
           width: 130,
           height: 130,

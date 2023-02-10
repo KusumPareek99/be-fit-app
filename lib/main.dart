@@ -2,11 +2,18 @@ import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/screens/login_screen.dart';
 import 'package:be_fit_app/screens/onboarding_screen.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
+import 'package:be_fit_app/service/local_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  	print(message.data.toString());
+ 	print(message.notification!.title);
+	}
 
 int? initScreen;
 
@@ -19,6 +26,9 @@ Future<void> main() async {
  // to bind auth with app
   WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp().then((value)=> Get.put(AuthController()));
+
+   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+LocalNotificationService.initialize();
 
 SharedPreferences preferences = await SharedPreferences.getInstance();
 initScreen = preferences.getInt('initScreen');

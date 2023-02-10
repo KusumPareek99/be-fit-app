@@ -59,7 +59,7 @@ Future<int> getTodaySteps(int value) async {
   c.updateSteps(todaySteps);
 
   print(
-      "today day no$todayDayNo saved step count $savedStepCount last dat saved $lastDaySaved last step value $lastValue");
+      "today day no$todayDayNo saved step count $savedStepCount last day saved $lastDaySaved last step value $lastValue");
 
   if (todaySteps > 0) {
     print("today steps in method $todaySteps");

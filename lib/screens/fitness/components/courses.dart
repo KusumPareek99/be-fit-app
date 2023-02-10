@@ -57,7 +57,7 @@ class _CoursesState extends State<Courses> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
+              children: [
                 const Text(
                   'Courses',
                   style: TextStyle(
@@ -68,12 +68,11 @@ class _CoursesState extends State<Courses> {
                 Material(
                   child: InkWell(
                     onTap: (() {
-                      
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AllCourses()),
-                );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AllCourses()),
+                      );
                     }),
                     child: const Text(
                       'See All',
@@ -97,18 +96,17 @@ class _CoursesState extends State<Courses> {
                         onTap: () async {
                           //launch url
                           String url = videoResult[index].url;
-                           if (await launchUrlString(url)) {
-                        await launchUrlString(url);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
+                          if (await launchUrlString(url)) {
+                            await launchUrlString(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
                           print("Launching URL ...");
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(appPadding*0.7),
+                          padding: const EdgeInsets.all(appPadding * 0.7),
                           child: Container(
                             height: size.height * 0.28,
-                  
                             decoration: BoxDecoration(
                                 color: white,
                                 borderRadius: BorderRadius.circular(30.0),
@@ -123,8 +121,8 @@ class _CoursesState extends State<Courses> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: appPadding,
-                                     ),
+                                    horizontal: appPadding,
+                                  ),
                                   child: Container(
                                     width: size.width * 0.3,
                                     height: size.height * 0.5,
@@ -138,7 +136,6 @@ class _CoursesState extends State<Courses> {
                                                 .medium
                                                 .url ??
                                             '',
-                                        
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -159,7 +156,7 @@ class _CoursesState extends State<Courses> {
                                         ),
                                         maxLines: 2,
                                       ),
-                                     SizedBox(
+                                      SizedBox(
                                         height: size.height * 0.01,
                                       ),
                                       Text(
@@ -181,8 +178,7 @@ class _CoursesState extends State<Courses> {
                                             width: size.width * 0.01,
                                           ),
                                           Text(
-                                            '${videoResult[index]
-                                                    .duration} min',
+                                            '${videoResult[index].duration} min',
                                             style: TextStyle(
                                               color: black.withOpacity(0.3),
                                             ),

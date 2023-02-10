@@ -1,4 +1,5 @@
 import 'package:be_fit_app/constants/const.dart';
+import 'package:be_fit_app/screens/fitness/components/all_yogaPoses.dart';
 
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -161,18 +162,25 @@ class _DiffStylesState extends State<DiffStyles> {
               horizontal: appPadding, vertical: appPadding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 'Yoga Poses',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Text(
-                'See All',
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w600, color: primary),
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const AllYogaPoses()));
+                  } ,
+                  child: const Text(
+                    'See All',
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600, color: primary),
+                  ),
+                ),
               ),
             ],
           ),
