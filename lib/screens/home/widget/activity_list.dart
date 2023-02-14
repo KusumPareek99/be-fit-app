@@ -1,11 +1,13 @@
 import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/controller/step_controller.dart';
 import 'package:be_fit_app/model/counter.dart';
+import 'package:be_fit_app/screens/home/activities/search_food.dart';
 import 'package:be_fit_app/screens/home/activities/step_count.dart';
 import 'package:be_fit_app/screens/home/activities/water_reminder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ActivityList extends StatelessWidget {
@@ -74,7 +76,7 @@ class ActivityList extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           height:h * 0.15,
           child: activityList("Nutrition Tracker",(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MyStepCounter()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFood()));
           },const FaIcon(FontAwesomeIcons.fire,color: black,),const Icon(
               Icons.add,
               color: Colors.black,

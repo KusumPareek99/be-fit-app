@@ -3,7 +3,7 @@ import 'package:be_fit_app/controller/step_controller.dart';
 import 'package:be_fit_app/widgets/app_bar.dart';
 import 'package:be_fit_app/widgets/radial_progress.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
