@@ -229,4 +229,13 @@ class AuthController extends GetxController {
       return "Document not found $e";
     }
   }
+
+    setDailyTarget(double value) {
+      if (value.isNaN) return;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .set({'Daily_target': value}, SetOptions(merge: true));
+  }
 }

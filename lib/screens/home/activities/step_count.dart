@@ -1,8 +1,10 @@
 import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/controller/step_controller.dart';
+import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:be_fit_app/widgets/app_bar.dart';
 import 'package:be_fit_app/widgets/radial_progress.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pedometer/pedometer.dart';
@@ -83,27 +85,20 @@ class _MyStepCounterState extends State<MyStepCounter> {
 
   final StepCounter c = stepCounterController;
 
+  AuthController authController = Get.find<AuthController>();
+
   TextEditingController stepTargetController = TextEditingController();
-  String targetval = "1";
+  double targetval = 1;
 
-setDailyTarget() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('target', "1");
-}
-
- getDailyTarget() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Return String
-  String? stringValue = prefs.getString('target');
-  return stringValue;
-}
 
 
   @override
   void initState() {
     initPlatformState();
-    setDailyTarget();
+
     super.initState();
+     authController.getUserInfo();
+     targetval = authController.myUser.value.daily_target == null ? 1000 : authController.myUser.value.daily_target!.toDouble();
   }
 
   void hideKeyboard(BuildContext context) {
@@ -213,11 +208,13 @@ setDailyTarget() async {
                   ),
                   GestureDetector(
                     onTap: ()async {
-                     targetval = stepTargetController.text;
-                      
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      prefs.setString('target', targetval);
-        
+                     
+                     if (stepTargetController.text.isEmpty && targetval<1){
+                      return;
+                     } 
+                     targetval = double.parse(stepTargetController.text);  
+                         authController.setDailyTarget(targetval); 
+                      stepTargetController.text="";
                     },
                     child: Container(
                       width: w * 0.32,
@@ -243,6 +240,10 @@ setDailyTarget() async {
               ),
         
               SizedBox(
+                height: h * 0.03,
+              ),
+               Obx((() => authController.myUser.value.daily_target==null ?  const Text("Your set target will be displayed here.") : Text(authController.myUser.value.daily_target.toString()))),
+   SizedBox(
                 height: h * 0.03,
               ),
               const Text(
@@ -297,8 +298,8 @@ setDailyTarget() async {
                         } else {
                           // datas loaded
                           final stepsUser = snapshot.data;
-                            
-                          return RadialProgress(mySteps: stepsUser!.toDouble(),target: int.parse(targetval).toDouble());
+                              
+                          return RadialProgress(mySteps: stepsUser!.toDouble(),target: targetval);
                         }
                       },
                     ),

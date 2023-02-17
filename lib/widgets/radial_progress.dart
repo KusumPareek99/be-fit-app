@@ -1,6 +1,7 @@
 import 'package:be_fit_app/controller/step_controller.dart';
+import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 import 'package:vector_math/vector_math_64.dart' as math;
 
@@ -18,8 +19,8 @@ class RadialProgress extends StatefulWidget {
   _RadialProgressState createState() => _RadialProgressState();
 }
 
-class _RadialProgressState extends State<RadialProgress>
-    with SingleTickerProviderStateMixin {
+class _RadialProgressState extends State<RadialProgress> with SingleTickerProviderStateMixin {
+
   late AnimationController _radialProgressAnimationController;
   late Animation<double> _progressAnimation;
   final Duration fadeInDuration = const Duration(milliseconds: 500);
@@ -28,17 +29,13 @@ class _RadialProgressState extends State<RadialProgress>
   double progressDegrees = 0;
   var count = 0;
 
-// getDailyTarget() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   //Return String
-//   String? stringValue = prefs.getString('target');
-  
-//   return stringValue;
-// }
+ AuthController authController = Get.find<AuthController>();
 
   @override
   void initState()  {
+    print("Radial init");
     super.initState();
+     authController.getUserInfo();
     _radialProgressAnimationController =
         AnimationController(vsync: this, duration: fillDuration);
     _progressAnimation = Tween(begin: 0.0, end: 360.0).animate(CurvedAnimation(
@@ -46,14 +43,16 @@ class _RadialProgressState extends State<RadialProgress>
       ..addListener(() {
         
         setState(() {
+         double i =  authController.myUser.value.daily_target == null ? 1000 : authController.myUser.value.daily_target!.toDouble() ;
           // Set progress bar according to target
-          progressDegrees = (widget.mySteps/widget.target) * _progressAnimation.value;
-         
+        
+        progressDegrees = (widget.mySteps / i) * _progressAnimation.value;
+        //  print("PRogress DEgrees$progressDegrees");
         });
       });
 
     _radialProgressAnimationController.forward();
-
+    
 
   }
 
@@ -66,7 +65,9 @@ class _RadialProgressState extends State<RadialProgress>
   @override
   Widget build(BuildContext context) {
     final StepCounter c = stepCounterController;
-    return CustomPaint(
+   // print("RADAL PROG PG "+ widget.target.toString());
+    return Obx( () => authController.myUser.value.daily_target == null 
+    ?  CustomPaint(
       painter: RadialPainter(progressDegrees),
       child: Container(
         height: 200.0,
@@ -94,20 +95,57 @@ class _RadialProgressState extends State<RadialProgress>
               const SizedBox(
                 height: 10.0,
               ),
-              // Obx(() => Text("${c.steps.value}",style: const TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold))),
-              Text("${widget.mySteps.toInt()}/${widget.target.toInt()}",style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+           const  Text("Your set target will be displayed here."),
             ],
           ),
         ),
       ),
-    );
+    )
+
+    : CustomPaint(
+      painter: RadialPainter(progressDegrees),
+      child: Container(
+        height: 200.0,
+        width: 200.0,
+        padding: const EdgeInsets.symmetric(vertical: 40.0),
+        child: AnimatedOpacity(
+          opacity: progressDegrees > 30 ? 1.0 : 0.0,
+          duration: fadeInDuration,
+          child: Column(
+            children: <Widget>[
+              const Text(
+                'STEPS',
+                style: TextStyle(fontSize: 24.0, letterSpacing: 1.5),
+              ),
+              const SizedBox(
+                height: 4.0,
+              ),
+              Container(
+                height: 5.0,
+                width: 80.0,
+                decoration: const BoxDecoration(
+                    color: primary,
+                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+            Text(authController.myUser.value.daily_target.toString()),
+            ],
+          ),
+        ),
+      ),
+    )
+ 
+    
+     );
   }
 }
 
 class RadialPainter extends CustomPainter {
   double progressInDegrees;
 
-  RadialPainter(this.progressInDegrees);
+ RadialPainter(this.progressInDegrees);
 
   @override
   void paint(Canvas canvas, Size size) {

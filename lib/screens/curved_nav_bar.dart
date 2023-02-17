@@ -37,12 +37,6 @@ class _CurvedNavBarState extends State<CurvedNavBar> {
         onTap: (index) {
           setState(() {
             selectedIconIndex = index;
-            
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => screens[index]),
-                // );
     });
           
               
