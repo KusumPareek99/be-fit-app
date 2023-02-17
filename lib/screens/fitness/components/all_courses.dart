@@ -180,9 +180,11 @@ class _AllCoursesState extends State<AllCourses> {
                       },
                     ),
                   )
-                : const Center(
+                :  Center(
                     child: SleekCircularSlider(
                       appearance: CircularSliderAppearance(
+                        customColors: CustomSliderColors(progressBarColor: primary),
+                   
                         spinnerMode: true,
                         size: 40,
                       ),

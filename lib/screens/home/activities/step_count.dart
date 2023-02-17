@@ -100,7 +100,7 @@ class _MyStepCounterState extends State<MyStepCounter> {
      authController.getUserInfo();
      targetval = authController.myUser.value.daily_target == null ? 1000 : authController.myUser.value.daily_target!.toDouble();
   }
-
+  
   void hideKeyboard(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
@@ -183,9 +183,14 @@ class _MyStepCounterState extends State<MyStepCounter> {
                               color: Colors.grey.withOpacity(0.2))
                         ]),
                     height: h * 0.07,
-                    child: TextField(
+                    child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: stepTargetController,
+                      validator: (value) {
+                        if(double.parse(value!) < 1 && value.isEmpty){
+                             Get.snackbar('Invalid input', 'Please enter a valid value');
+                        }
+                      },
                       textInputAction: TextInputAction.done,
                       onChanged: (value) {},
                       decoration: InputDecoration(
@@ -206,15 +211,24 @@ class _MyStepCounterState extends State<MyStepCounter> {
                               borderRadius: BorderRadius.circular(12))),
                     ),
                   ),
+                
                   GestureDetector(
                     onTap: ()async {
-                     
-                     if (stepTargetController.text.isEmpty && targetval<1){
+            
+                     if (stepTargetController.text.trim().isEmpty){
                       return;
                      } 
-                     targetval = double.parse(stepTargetController.text);  
-                         authController.setDailyTarget(targetval); 
+                     
+                     targetval = double.parse(stepTargetController.text.trim());  
+                     targetval < 1 
+                     ? targetval = 1000
+                     : authController.setDailyTarget(targetval); 
                       stepTargetController.text="";
+                     setState(() {
+                       authController.getUserInfo();
+                     });
+                   
+                         
                     },
                     child: Container(
                       width: w * 0.32,

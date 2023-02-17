@@ -1,4 +1,5 @@
 import 'package:be_fit_app/constants/const.dart';
+import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 
@@ -31,10 +32,10 @@ class CustomAppBar extends StatelessWidget {
            ),
             GestureDetector(
               onTap: () {
-                // call function to view menu bar with options like [help,settings,about]
+                AuthController.instance.logOut();
               },
               child: const Icon(
-                Icons.menu_rounded,
+                Icons.logout,
                 size: 30.0,
                 color: white,
               ),

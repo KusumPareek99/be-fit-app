@@ -22,6 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
     static bool isProviderGoogle = arr[0].providerId == 'google.com' ? true : false;
   int selectedIconIndex = 2;
 
+  
+
   @override
   Widget build(BuildContext context) {
 
@@ -62,17 +64,13 @@ class _ProfilePageState extends State<ProfilePage> {
               Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! :  AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')) ,
               style: const TextStyle(color: Colors.pink, fontWeight: FontWeight.w600,fontSize: 22),
               ),
-          //  Obx((() => authController.myUser.value.name == null 
-          //                 ? const Center(
-          //                   child:CircularProgressIndicator()
-          //                 )
-          //                 : Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! : authController.myUser.value.name!.isEmpty ? AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')) : authController.myUser.value.name!,
-          //     style: const TextStyle(color: Colors.pink, fontWeight: FontWeight.w600,fontSize: 22),
-          //     )
-
-          //   )),
+         
               SizedBox(
-                height: h*0.02,
+                height: h*0.2,
+              ),
+             const Text("Hope you are enjoying our app !" , style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+              SizedBox(
+                height: h*0.2,
               ),
             GestureDetector(
               onTap:(){

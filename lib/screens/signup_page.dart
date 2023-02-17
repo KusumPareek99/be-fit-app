@@ -2,6 +2,7 @@ import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/model/user_model.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:be_fit_app/service/user_repository.dart';
+import 'package:be_fit_app/widgets/top_bar.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -123,17 +124,19 @@ class _SignUpPageState extends State<SignUpPage> {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
+
             children: [
-              SizedBox(
-                height: h * 0.01,
-              ),
-              Container(
-                width: w * 0.5,
-                height: h * 0.28,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/storyset_signup.png"),
-                        fit: BoxFit.cover)),
+              Container(width: w, height: h * 0.15, child: TopBar()),
+             
+              ClipOval(
+                child: Container(
+                  width: w * 0.5,
+                  height: h * 0.25,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/logo-whiteBg.png"),
+                          fit: BoxFit.fill)),
+                ),
               ),
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
@@ -144,47 +147,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: h * 0.01,
                       ),
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius: BorderRadius.circular(50),
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //             blurRadius: 8,
-                      //             spreadRadius: 5,
-                      //             offset: const Offset(1, 1),
-                      //             color: Colors.grey.withOpacity(0.2))
-                      //       ]),
-                      //   height: 65,
-                      //   child: TextField(
-                      //     controller: nameController,
-                      //     decoration: InputDecoration(
-                      //         hintText: "Your Name",
-                      //         hintStyle: const TextStyle(
-                      //           fontSize: 12,
-                      //         ),
-                      //         prefixIcon: const Icon(
-                      //             Icons.account_circle_outlined,
-                      //             color: Color.fromARGB(255, 243, 172, 101)),
-                      //         focusedBorder: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(50),
-                      //             borderSide: const BorderSide(
-                      //                 color: Colors.white, width: 1.0)),
-                      //         enabledBorder: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(50),
-                      //             borderSide: const BorderSide(
-                      //                 color: Colors.white, width: 1.0)),
-                      //         border: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(50))),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: h * 0.02,
-                      // ),
+
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 8,
@@ -198,20 +165,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: InputDecoration(
                               hintText: "Email ID",
                               hintStyle: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 15,
                               ),
                               prefixIcon: const Icon(Icons.email_outlined,
-                                  color: Color.fromARGB(255, 243, 172, 101)),
+                                  color: primary),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                                  borderRadius: BorderRadius.circular(8))),
                         ),
                       ),
                       SizedBox(
@@ -220,7 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 8,
@@ -238,9 +205,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusNode: textFieldFocusNode,
                           decoration: InputDecoration(
                               hintText: "Password",
-                              hintStyle: const TextStyle(fontSize: 12),
+                              hintStyle: const TextStyle(fontSize: 15),
                               prefixIcon: const Icon(Icons.lock_outline,
-                                  color: Color.fromARGB(255, 243, 172, 101)),
+                                  color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenPassword
                                     ? const Icon(Icons.visibility_off_outlined)
@@ -250,15 +217,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                 },
                               ),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                                  borderRadius: BorderRadius.circular(8))),
                         ),
                       ),
                       SizedBox(
@@ -267,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 8,
@@ -284,9 +251,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                           decoration: InputDecoration(
                               hintText: "Confirm Password",
-                              hintStyle: const TextStyle(fontSize: 12),
+                              hintStyle: const TextStyle(fontSize: 15),
                               prefixIcon: const Icon(Icons.lock_outline,
-                                  color: Color.fromARGB(255, 243, 172, 101)),
+                                  color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenConfirmPassword
                                     ? const Icon(Icons.visibility_off_outlined)
@@ -296,15 +263,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                 },
                               ),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                                  borderRadius: BorderRadius.circular(8))),
                         ),
                       ),
                       Row(
@@ -322,39 +289,16 @@ class _SignUpPageState extends State<SignUpPage> {
               GestureDetector(
                 onTap: ()  {
                   final user = UserModel(
-                      //  name: nameController.text.trim(),
+                 
                         email: emailController.text.trim());
                     signUp(user);
-                 /* print("on tap signup");
-                  bool isregistered = await AuthController.instance.register(
-                      emailController.text.trim(),
-                      passwordController.text.trim());
-                      print("is registered : ${isregistered}");
-                  if (isregistered) {
-                    var arr =
-                        AuthController.instance.auth.currentUser!.providerData;
-                    bool isProviderGoogle =
-                        arr[0].providerId == 'google.com' ? true : false;
-                    String profileImage = isProviderGoogle
-                        ? AuthController.instance.auth.currentUser!.photoURL!
-                        : 'assets/images/screen/propic.jpeg';
-
-                    final user = UserModel(
-                        name: nameController.text.trim(),
-                        email: emailController.text.trim(),
-                        profileImage: profileImage);
-                    signUp(user);
-                    print("Called signup");
-                  }else{
-                    print('Could not register');
-                  }
-                  hideKeyboard(context);*/
+                 
                 },
                 child: Container(
                   width: w * 0.62,
                   height: h * 0.07,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(8),
                       image: const DecorationImage(
                           image: AssetImage("assets/images/loginbtn.png"),
                           fit: BoxFit.cover)),
@@ -384,17 +328,13 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: h * 0.01,
               ),
-              // Obx(() {
-              //   if (controller.googleAccount.value==null) return LoginPage();
-              //   else return WelcomePage(email: controller.googleAccount.value?.email ?? '' );
-              // }),
+            
               SignInButtonBuilder(
                   height: 40,
                   backgroundColor: Colors.blue,
                   text: "Sign up with Google",
                   onPressed: () {
-                    //AuthController.instance.signInWithGoogle();
-                    // controller.googleLogin();
+               
                     AuthController().signInWithGoogle();
                   },
                   image: Container(

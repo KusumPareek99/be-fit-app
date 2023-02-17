@@ -1,3 +1,4 @@
+import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/screens/forgot_password.dart';
 import 'package:be_fit_app/screens/signup_page.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                               fontSize: 50,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFFF58434)),
+                              color: primary),
                         ),
                       ),
                       SizedBox(
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 8,
@@ -97,17 +98,17 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                               hintText: "Email ID",
                               prefixIcon: const Icon(Icons.email_outlined,
-                                  color: Color(0xFFF58434)),
+                                  color: primary),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30))),
+                                  borderRadius: BorderRadius.circular(8))),
                         ),
                       ),
                       SizedBox(
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 8,
@@ -133,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                               hintText: "Password",
                               prefixIcon: const Icon(Icons.password_outlined,
-                                  color: Color(0xFFF58434)),
+                                  color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenPassword
                                     ? const Icon(Icons.visibility_off_outlined)
@@ -143,15 +144,15 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                               ),
                               focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
                                       color: Colors.white, width: 1.0)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                                  borderRadius: BorderRadius.circular(8))),
                         ),
                       ),
                       SizedBox(
@@ -170,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: const Text(
                               "Forgot your Password?",
                               style: TextStyle(
-                                  fontSize: 15, color: Color(0xFFF58434)),
+                                  fontSize: 15, color: primary),
                             ),
                           ),
                         ],
@@ -190,13 +191,13 @@ class _LoginPageState extends State<LoginPage> {
                   width: w * 0.62,
                   height: h * 0.07,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(8),
                       image: const DecorationImage(
                           image: AssetImage("assets/images/loginbtn.png"),
                           fit: BoxFit.cover)),
                   child: const Center(
                     child: Text(
-                      "LOGIN",
+                      "Login",
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -250,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                           text: "Create",
                           style: const TextStyle(
                             fontSize: 15,
-                            color: Color(0xFFF58434),
+                            color: primary,
                             fontWeight: FontWeight.bold,
                           ),
                           recognizer: TapGestureRecognizer()

@@ -29,9 +29,9 @@ class _DiffStylesState extends State<DiffStyles> {
       setState(() {
         isLoaded = true; //setting content as loaded
       });
-    } 
-    catch (e) {
-      print(e); //in case of any exception like no internet or problem with API log it to console
+    } catch (e) {
+      print(
+          e); //in case of any exception like no internet or problem with API log it to console
     }
   }
 
@@ -43,7 +43,6 @@ class _DiffStylesState extends State<DiffStyles> {
 
   _buildStyles(BuildContext context, int index) {
     Size size = MediaQuery.of(context).size;
-  
 
     return Stack(
       alignment: Alignment.center,
@@ -173,12 +172,17 @@ class _DiffStylesState extends State<DiffStyles> {
               Material(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const AllYogaPoses()));
-                  } ,
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AllYogaPoses()));
+                  },
                   child: const Text(
                     'See All',
                     style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600, color: primary),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: primary),
                   ),
                 ),
               ),
@@ -199,9 +203,10 @@ class _DiffStylesState extends State<DiffStyles> {
                       }),
                 ),
               )
-            : const Center(
+            : Center(
                 child: SleekCircularSlider(
                   appearance: CircularSliderAppearance(
+                    customColors: CustomSliderColors(progressBarColor: primary),
                     spinnerMode: true,
                     size: 40,
                   ),

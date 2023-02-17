@@ -33,6 +33,7 @@ class ActivityList extends StatelessWidget {
             },
             child: Card(
               shadowColor: Colors.black,
+              color: primary,
               child: Card(
                 shadowColor: Colors.black,
                 child: Container(
@@ -77,6 +78,7 @@ class ActivityList extends StatelessWidget {
             },
             child: Card(
               shadowColor: Colors.black,
+              color: primary,
               child: Card(
                 shadowColor: Colors.black,
                 child: Container(
