@@ -15,18 +15,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-final textFieldFocusNode = FocusNode();
+  final textFieldFocusNode = FocusNode();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   bool isHiddenPassword = true;
 
   void hideKeyboard(BuildContext context) {
-      FocusScopeNode currentFocus = FocusScope.of(context);
-      if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      }
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
     }
+  }
 
   void _togglePasswordView() {
     setState(() {
@@ -40,7 +39,6 @@ final textFieldFocusNode = FocusNode();
       print(textFieldFocusNode.context);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +54,11 @@ final textFieldFocusNode = FocusNode();
                 height: h * 0.01,
               ),
               Container(
-                
-                width: w,
-                child: Column(
+                  width: w,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                         width: w,
-                          height: h * 0.15,
-                        child: TopBar()),
+                      Container(width: w, height: h * 0.15, child: TopBar()),
                       Container(
                           width: w,
                           height: h * 0.2,
@@ -167,11 +161,12 @@ final textFieldFocusNode = FocusNode();
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            onTap:(){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                              return const ForgotPasswordPage();
-                            }));
-                            } ,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return const ForgotPasswordPage();
+                              }));
+                            },
                             child: const Text(
                               "Forgot your Password?",
                               style: TextStyle(
@@ -180,9 +175,8 @@ final textFieldFocusNode = FocusNode();
                           ),
                         ],
                       ),
-      
                     ],
-                      )        ),
+                  )),
               SizedBox(
                 height: h * 0.02,
               ),
@@ -190,7 +184,7 @@ final textFieldFocusNode = FocusNode();
                 onTap: () {
                   AuthController.instance.login(emailController.text.trim(),
                       passwordController.text.trim());
-                      hideKeyboard(context);
+                  hideKeyboard(context);
                 },
                 child: Container(
                   width: w * 0.62,
@@ -231,9 +225,7 @@ final textFieldFocusNode = FocusNode();
                   backgroundColor: Colors.blue,
                   text: "Sign in with Google",
                   onPressed: () {
-                    
                     AuthController().signInWithGoogle();
-
                   },
                   image: Container(
                     height: 30.0,
@@ -246,7 +238,6 @@ final textFieldFocusNode = FocusNode();
                       shape: BoxShape.circle,
                     ),
                   )),
-
               SizedBox(
                 height: h * 0.03,
               ),
@@ -269,6 +260,5 @@ final textFieldFocusNode = FocusNode();
             ],
           ),
         ));
-
   }
 }

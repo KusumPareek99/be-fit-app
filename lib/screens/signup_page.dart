@@ -2,7 +2,6 @@ import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/model/user_model.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:be_fit_app/service/user_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final textFieldFocusNode = FocusNode();
 
-  final TextEditingController nameController = TextEditingController();
+  //final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
@@ -74,15 +73,13 @@ class _SignUpPageState extends State<SignUpPage> {
       bool isregistered = await AuthController.instance.register(
           emailController.text.trim(), passwordController.text.trim());
       if (isregistered) {
-        var arr = AuthController.instance.auth.currentUser!.providerData;
-        bool isProviderGoogle =
-            arr[0].providerId == 'google.com' ? true : false;
-        String profileImage = isProviderGoogle
-            ? AuthController.instance.auth.currentUser!.photoURL!
-            : 'assets/images/screen/propic.jpeg';
-        print(
-            "${emailController.text.trim()}\n${nameController.text.trim()}\n$profileImage");
-        userRepo.createUser(user);
+        // var arr = AuthController.instance.auth.currentUser!.providerData;
+        // bool isProviderGoogle =
+        //     arr[0].providerId == 'google.com' ? true : false;
+        // String profileImage = isProviderGoogle
+        //     ? AuthController.instance.auth.currentUser!.photoURL!
+        //     : 'assets/images/screen/app_logo.png';
+        //  userRepo.createUser(user);
         Get.snackbar('Sign Up Success', 'Message : ',
           backgroundColor: Colors.green,
           snackPosition: SnackPosition.BOTTOM,
@@ -110,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     emailController.dispose();
-    nameController.dispose();
+   // nameController.dispose();
     passwordController.dispose();
     confirmPassController.dispose();
     super.dispose();
@@ -147,43 +144,43 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: h * 0.01,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 8,
-                                  spreadRadius: 5,
-                                  offset: const Offset(1, 1),
-                                  color: Colors.grey.withOpacity(0.2))
-                            ]),
-                        height: 65,
-                        child: TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                              hintText: "Your Name",
-                              hintStyle: const TextStyle(
-                                fontSize: 12,
-                              ),
-                              prefixIcon: const Icon(
-                                  Icons.account_circle_outlined,
-                                  color: Color.fromARGB(255, 243, 172, 101)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                  borderSide: const BorderSide(
-                                      color: Colors.white, width: 1.0)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                  borderSide: const BorderSide(
-                                      color: Colors.white, width: 1.0)),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: h * 0.02,
-                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       borderRadius: BorderRadius.circular(50),
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //             blurRadius: 8,
+                      //             spreadRadius: 5,
+                      //             offset: const Offset(1, 1),
+                      //             color: Colors.grey.withOpacity(0.2))
+                      //       ]),
+                      //   height: 65,
+                      //   child: TextField(
+                      //     controller: nameController,
+                      //     decoration: InputDecoration(
+                      //         hintText: "Your Name",
+                      //         hintStyle: const TextStyle(
+                      //           fontSize: 12,
+                      //         ),
+                      //         prefixIcon: const Icon(
+                      //             Icons.account_circle_outlined,
+                      //             color: Color.fromARGB(255, 243, 172, 101)),
+                      //         focusedBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(50),
+                      //             borderSide: const BorderSide(
+                      //                 color: Colors.white, width: 1.0)),
+                      //         enabledBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(50),
+                      //             borderSide: const BorderSide(
+                      //                 color: Colors.white, width: 1.0)),
+                      //         border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(50))),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: h * 0.02,
+                      // ),
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -325,7 +322,7 @@ class _SignUpPageState extends State<SignUpPage> {
               GestureDetector(
                 onTap: ()  {
                   final user = UserModel(
-                        name: nameController.text.trim(),
+                      //  name: nameController.text.trim(),
                         email: emailController.text.trim());
                     signUp(user);
                  /* print("on tap signup");

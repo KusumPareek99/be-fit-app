@@ -1,388 +1,379 @@
 import 'dart:io';
 
-import 'package:be_fit_app/constants/const.dart';
-import 'package:be_fit_app/controller/profile_controller.dart';
-import 'package:be_fit_app/model/user_model.dart';
-import 'package:be_fit_app/screens/profile/widget/profile_widget.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
-import 'package:be_fit_app/widgets/app_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:be_fit_app/service/user_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
-//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-enum Gender { MALE, FEMALE }
+enum Gender { Male, Female }
 
 class EditProfilePage extends StatefulWidget {
-  final UserModel? user;
-  const EditProfilePage({Key? key, this.user}) : super(key: key);
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  Gender? _gender;
-  File? _profileImage;
+ 
 
-  // controllers
-  final controller = Get.put(ProfileController());
-
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController heightcontroller = TextEditingController();
-  TextEditingController weightcontroller = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+  Gender? _gender;
+  TextEditingController heightController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+  String selectedGender = "";
+  final userRepoController = Get.put(UserRepository());
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
+
+  final ImagePicker _picker = ImagePicker();
+  var selectedImage;
 
   static var arr = AuthController.instance.auth.currentUser!.providerData;
   static bool isProviderGoogle =
       arr[0].providerId == 'google.com' ? true : false;
 
-  String displayProfileImage() {
-    if (_profileImage == null) {
-      if (isProviderGoogle) {
-        return AuthController.instance.auth.currentUser!.photoURL!;
-      } else {
-        return 'assets/images/app_logo.png';
-      }
+  getImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image != null) {
+      selectedImage = File(image.path);
+      setState(() {});
+    }
+  }
+
+  String defaultImage() {
+    if (isProviderGoogle) {
+      return AuthController.instance.auth.currentUser!.photoURL!;
     } else {
-      print(_profileImage);
-      return _profileImage.toString();
+      return 'assets/images/app_logo.png';
     }
   }
 
-  handleImageFromGallery() async {
-    try {
-      final picker = ImagePicker();
-      final XFile? imageFile = await picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 100);
-      if (imageFile == null) {
-        return;
-      }
-      
-      final directory = await getApplicationDocumentsDirectory();
-      final name = basename(imageFile.path);
-      final image = File('${directory.path}/$name');
-      final newImage = await File(imageFile.path).copy(image.path);
-      setState(() {
-        _profileImage = File(newImage.path);
-      });
 
-     
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  String newimgpath = '';
 
   @override
   void initState() {
     super.initState();
-    _gender = Gender.MALE;
-  }
-
-  Stream<QuerySnapshot> userDetails() => FirebaseFirestore.instance
-      .collection('users')
-      .where('Email', isEqualTo: FirebaseAuth.instance.currentUser!.email)
-      .snapshots();
-
-  @override
-  Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-        body: SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: StreamBuilder(
-        stream: userDetails(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text('Something went wrong ${snapshot.error}'),
-            );
-          } else if (snapshot.hasData) {
-            var user = snapshot.data!.docs[0].data() as Map;
-
-            print(user['Email']);
-            return Column(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: appPadding * 1.4),
-                    child: Column(
-                      children: [
-                        CustomAppBar(),
-                      ],
-                    )),
-                ProfileWidget(
-                  imagePath: displayProfileImage(),
-                  isEdit: true,
-                  onClicked: () async {
-                    handleImageFromGallery();
-                  },
-                ),
-                SizedBox(height: h * 0.02),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextField(
-                    controller: namecontroller..text = user['UserName'],
-                    onChanged: (value) {},
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.person,
-                        color: black,
-                      ),
-                      labelText: "Full Name",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: h * 0.02),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 5.0),
-                  child: TextField(
-                    controller: dateController,
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.calendar_month_outlined,
-                            color: black),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        labelText: "Enter your DOB"),
-                    onChanged: (date) {},
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1940),
-                        lastDate: DateTime.now(),
-                      );
-                      if (pickedDate != null) {
-                        String formattedDate =
-                            DateFormat("yyyy-MM-dd").format(pickedDate);
-
-                        setState(() {
-                          dateController.text = formattedDate;
-                          print(dateController.text);
-                        });
-                      } else {
-                        print("No date selected");
-                        return;
-                      }
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Row(
-                    children: [
-                      const Flexible(child: Text("Gender : ")),
-                      Expanded(
-                        child: RadioListTile(
-                            contentPadding: EdgeInsets.zero,
-                            value: Gender.MALE,
-                            groupValue: _gender,
-                            title: Text(Gender.MALE.name,
-                                style: const TextStyle(fontSize: 14)),
-                            onChanged: (val) {
-                              setState(() {
-                                _gender = val;
-                              });
-
-                              print(Gender.MALE.name);
-                            }),
-                      ),
-                      Expanded(
-                        child: RadioListTile(
-                            contentPadding: const EdgeInsets.all(0.0),
-                            value: Gender.FEMALE,
-                            groupValue: _gender,
-                            title: Text(
-                              Gender.FEMALE.name,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            onChanged: (val) {
-                              setState(() {
-                                _gender = val;
-                              });
-                              print(Gender.FEMALE.name);
-                            }),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextField(
-                    controller: heightcontroller,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.calculate_outlined,
-                        color: black,
-                      ),
-                      labelText: "Height",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextField(
-                    controller: weightcontroller,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.calculate_outlined,
-                        color: black,
-                      ),
-                      labelText: "Weight",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                SizedBox(height: h * 0.02),
-                GestureDetector(
-                  onTap: () async {
-                    // update user details in firestore
-                    String oldprofile = isProviderGoogle
-                        ? AuthController.instance.auth.currentUser!.photoURL!
-                        : 'assets/images/app_logo.png';
-                    String profile = newimgpath == '' ? oldprofile : newimgpath;
-                    final editUserDetails = UserModel(
-                        name: namecontroller.text.trim(),
-                        email: FirebaseAuth.instance.currentUser!.email!,
-                        profileImage: profile,
-                        dob: dateController.text.trim(),
-                        // gender:  ,
-                        height: heightcontroller.text.trim(),
-                        weight: weightcontroller.text.trim());
-
-                    await controller.updateRecord(editUserDetails);
-
-                    print("Details Saved");
-                  },
-                  child: Container(
-                    width: w * 0.62,
-                    height: h * 0.07,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: const DecorationImage(
-                            image: AssetImage("assets/images/loginbtn.png"),
-                            fit: BoxFit.cover)),
-                    child: const Center(
-                      child: Text(
-                        "Save Details",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    ));
-  }
-}
-
-/*
-import 'dart:io';
-
-import 'package:be_fit_app/constants/const.dart';
-import 'package:be_fit_app/screens/profile/widget/profile_widget.dart';
-import 'package:be_fit_app/service/auth_controller.dart';
-import 'package:be_fit_app/widgets/app_bar.dart';
-
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-
-class EditProfilePage extends StatelessWidget{
   
-  const EditProfilePage({Key? key}) : super(key:key);
-    static var arr = AuthController.instance.auth.currentUser!.providerData;
-  static bool isProviderGoogle =
-      arr[0].providerId == 'google.com' ? true : false;
+    selectedGender = authController.myUser.value.gender ?? "";
+    nameController.text = authController.myUser.value.name??"";
+    dateController.text = authController.myUser.value.dob ??"";
+    heightController.text = authController.myUser.value.height??"";
+    weightController.text = authController.myUser.value.weight??"";
+    selectedImage = authController.myUser.value.profileImage??"";
+
+      _gender = Gender.Male;
+  }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-return  Scaffold(
-  body: SingleChildScrollView(
-    child: Center(
-      child: Column(
-        children: [
-            Padding(
-                padding: EdgeInsets.only(top: appPadding * 2),
-                child: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: 
+             
+               Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomAppBar(),                    
-                  ],                 
+                    Container(
+                      height: Get.height * 0.3,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: InkWell(
+                              onTap: () {
+                                getImage(ImageSource.gallery);
+                              },
+                              
+                              child: selectedImage.toString().isEmpty
+                                  ? Container(
+                                      width: 120,
+                                      height: 120,
+                                      margin: const EdgeInsets.only(bottom: 20),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: authController.myUser.value.profileImage != null ? NetworkImage(authController.myUser.value.profileImage!) :
+                                                isProviderGoogle
+                                                    ? NetworkImage(
+                                                        AuthController
+                                                            .instance
+                                                            .auth
+                                                            .currentUser!
+                                                            .photoURL!)
+                                                    : const AssetImage(
+                                                            'assets/images/app_logo.png')
+                                                        as ImageProvider,
+                                            fit: BoxFit.fill),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 120,
+                                      height: 120,
+                                      margin: const EdgeInsets.only(bottom: 20),
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: selectedImage.toString().contains('http') ? NetworkImage(selectedImage) as ImageProvider : FileImage(selectedImage),
+                                              fit: BoxFit.fill),
+                                          shape: BoxShape.circle,
+                                          color: const Color(0xffD6D6D6)),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 23),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            TextFieldWidget(
+                                'Name',
+                                Icons.person_outlined,
+                                TextInputType.name,
+                                nameController,
+                                (String? input) {
+                              if (input!.isEmpty) {
+                                return 'Name is required!';
+                              }
+
+                              if (input.length < 3) {
+                                return 'Please enter a valid name!';
+                              }
+
+                              return null;
+                            }),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 1,
+                                    blurRadius: 1)
+                              ], borderRadius: BorderRadius.circular(8)),
+                              child: TextField(
+                                controller: dateController,
+                                style: const TextStyle(fontSize: 14),
+                                decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: Colors.orange),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(8)),
+                                    hintText: "Select your DOB"),
+                                onChanged: (date) {},
+                                readOnly: true,
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1940),
+                                    lastDate: DateTime.now(),
+                                  );
+                                  if (pickedDate != null) {
+                                    String formattedDate =
+                                        DateFormat("yyyy-MM-dd")
+                                            .format(pickedDate);
+
+                                    setState(() {
+                                      dateController.text = formattedDate;
+                                      print(dateController.text);
+                                    });
+                                  } else {
+                                    print("No date selected");
+                                    return;
+                                  }
+                                },
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Flexible(child: Text("Gender :")),
+                                Expanded(
+                                  child: RadioListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      value: Gender.Male,
+                                      groupValue: _gender,
+                                      title: Text(Gender.Male.name,
+                                          style: const TextStyle(fontSize: 13)),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          _gender = val;
+                                        });
+
+                                        print(Gender.Male.name);
+                                      }),
+                                ),
+                                Expanded(
+                                  child: RadioListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      value: Gender.Female,
+                                      groupValue: _gender,
+                                      title: Text(
+                                        Gender.Female.name,
+                                        style: const TextStyle(fontSize: 13),
+                                      ),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          _gender = val;
+                                        });
+                                        print(_gender!.name);
+                                      }),
+                                )
+                              ],
+                            ),
+                            
+                            TextFieldWidget(
+                                'Height',
+                                Icons.height,
+                                TextInputType.number,
+                                heightController,
+                                (String? input) {
+                              if (input!.isEmpty) {
+                                return 'Height is required for your BMI!';
+                              }
+
+                              return null;
+                            }, onTap: () {}),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFieldWidget(
+                                'Weight',
+                                Icons.calculate_outlined,
+                                TextInputType.number,
+                                weightController,
+                                (String? input) {
+                              if (input!.isEmpty) {
+                                return 'Weight is requiredfor your BMI!';
+                              }
+
+                              return null;
+                            }, onTap: () {}),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Obx(() => authController.isProfileUploading.value
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : submitButton('Submit', () async {
+                                    if (!formKey.currentState!.validate()) {
+                                      return;
+                                    }
+                                    print(selectedImage.toString());
+
+                                    if (selectedImage.toString().contains('http') || selectedImage.toString().isEmpty) {
+                                   
+                                      Get.snackbar('Warning', 'Please choose your profile again.');
+                                     return;
+                                    }
+                                    
+                                    authController.isProfileUploading(true);
+                                   
+                                    authController.storeUserInfo(
+                                        selectedImage,
+                                        nameController.text.trim(),
+                                        dateController.text.trim(),
+                                        _gender!.name,
+                                        heightController.text.trim(),
+                                        weightController.text.trim());
+
+                                   Get.snackbar('Message','Details saved successfully');
+                                  })),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+               )
+        
+          
+      ),
+    );
+  }
+
+  TextFieldWidget(String title, IconData iconData, TextInputType keyboardType,
+      TextEditingController controller, Function validator,
+      {Function? onTap}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+        const SizedBox(
+          height: 6,
+        ),
+        Container(
+          width: Get.width,
+          // height: 50,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 1)
+              ],
+              borderRadius: BorderRadius.circular(8)),
+          child: TextFormField(
+            //onTap: ()=> onTap!(),
+            keyboardType: keyboardType,
+            validator: (input) => validator(input),
+            controller: controller,
+            style: const TextStyle(
+                fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),
+            decoration: InputDecoration(
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Icon(
+                  iconData,
+                  color: Colors.orange,
                 ),
               ),
-           Stack(
-            children: [
-              ProfileWidget(
-              imagePath: isProviderGoogle
-                  ? AuthController.instance.auth.currentUser!.photoURL!
-                  : 'assets/images/app_logo.png',
-              isEdit: true,
-              onClicked: () async {
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (image == null) return;
-      
-                final directory = await getApplicationDocumentsDirectory();
-                final name = basename(image.path);
-                final imageFile = File('${directory.path}/$name');
-                final newImage = await File(image.path).copy(imageFile.path);
-              },
+              border: InputBorder.none,
             ),
-            ],
-           )   
-          ,Form(child: Padding(
-            padding: const EdgeInsets.only(left:12.0,right: 12.0,top: 10.0),
-            child: Column(
-              
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    label: Text("Full Name"),
-                    prefixIcon: Icon(Icons.person_outline_rounded)
-                  ),
-                )
-              ],
-            ),
-          )),
-        ],
-      ),
-    ),
-  ),
-);
+          ),
+        )
+      ],
+    );
   }
 
-
+  Widget submitButton(String title, Function onPressed) {
+    return MaterialButton(
+      minWidth: Get.width,
+      height: 50,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      color: Colors.orange,
+      onPressed: () => onPressed(),
+      child: Text(
+        title,
+        style: const TextStyle(
+            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+    );
+  }
 }
-*/

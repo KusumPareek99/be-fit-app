@@ -1,12 +1,8 @@
-import 'package:be_fit_app/constants/const.dart';
- 
 import 'package:be_fit_app/screens/profile/edit_profile.dart';
 import 'package:be_fit_app/screens/profile/widget/profile_widget.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
-import 'package:be_fit_app/test_user_profile.dart';
-import 'package:be_fit_app/widgets/app_bar.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 
@@ -19,9 +15,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+     AuthController authController = Get.find<AuthController>();
+
     static var arr = AuthController.instance.auth.currentUser!.providerData;
-    static bool isProviderGoogle =
-      arr[0].providerId == 'google.com' ? true : false;
+    static bool isProviderGoogle = arr[0].providerId == 'google.com' ? true : false;
   int selectedIconIndex = 2;
 
   @override
@@ -38,15 +36,17 @@ class _ProfilePageState extends State<ProfilePage> {
    
     return Scaffold(
       body: Center(
-        child: Column(
+      
+         child:  Column(
           children: [
+            
            
            Padding(
              padding: const EdgeInsets.only(top:20.0),
              child: ProfileWidget(
-                imagePath:isProviderGoogle ? AuthController.instance.auth.currentUser!.photoURL! :  'assets/images/app_logo.png',
+               // imagePath:isProviderGoogle ? AuthController.instance.auth.currentUser!.photoURL! :  'assets/images/app_logo.png',
                 onClicked: () async {
-                  
+                 // Get.off(EditProfilePage());
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -59,22 +59,32 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
                 height: h*0.02,
               ),
-           Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! : AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')),
-              style: const TextStyle(color: secondary, fontWeight: FontWeight.w600,fontSize: 22),
+              Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! :  AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')) ,
+              style: const TextStyle(color: Colors.pink, fontWeight: FontWeight.w600,fontSize: 22),
               ),
+          //  Obx((() => authController.myUser.value.name == null 
+          //                 ? const Center(
+          //                   child:CircularProgressIndicator()
+          //                 )
+          //                 : Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! : authController.myUser.value.name!.isEmpty ? AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')) : authController.myUser.value.name!,
+          //     style: const TextStyle(color: Colors.pink, fontWeight: FontWeight.w600,fontSize: 22),
+          //     )
+
+          //   )),
               SizedBox(
                 height: h*0.02,
               ),
             GestureDetector(
               onTap:(){
                  AuthController.instance.logOut();
+                
               } ,
               child: Center(
                 child: Container(
                   width: w * 0.62,
                   height: h * 0.08,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(10),
                       image: const DecorationImage(
                           image: AssetImage("assets/images/loginbtn.png"),
                           fit: BoxFit.cover)),
@@ -93,8 +103,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
          
           ],
-        ),
-      ),
+          )
+    
+         // )) 
+           ),
           );
   }
 }

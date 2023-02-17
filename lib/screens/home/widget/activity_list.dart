@@ -21,88 +21,90 @@ class ActivityList extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(top:16.0),
+          margin: const EdgeInsets.only(top: 16.0),
           padding: const EdgeInsets.all(10.0),
-          height:h * 0.15,
+          height: h * 0.3,
           child: GestureDetector(
-      onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MyStepCounter()));
-          },
-      child: Card(
-        shadowColor: Colors.black,
-            child: Center(
-              child: ListTile(
-          
-          leading:  Transform.rotate( angle: 80,
-            child: const FaIcon(FontAwesomeIcons.shoePrints, color: black,)),
-          title: const Text("Step Counter Page"), 
-          subtitle: Obx(() => Text("${c.steps.value}")),
-          trailing: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MyStepCounter()));
+            },
+            child: Card(
+              shadowColor: Colors.black,
+              child: Card(
+                shadowColor: Colors.black,
+                child: Container(
+                  color: thirdColor,
+                  width: w * 0.8,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Transform.rotate(
+                          angle: 80,
+                          child: const FaIcon(
+                            FontAwesomeIcons.shoePrints,
+                            color: black,
+                            size: 30,
+                          )),
+                      SizedBox(
+                        height: h * 0.02,
+                      ),
+                      const Text(
+                        "Step Count",
+                        style: TextStyle(color: primary, fontSize: 22),
+                      ),
+                      Obx(() => Text(
+                            "${c.steps.value}",
+                            style: const TextStyle(color: black, fontSize: 19),
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.all(8.0),
+          height: h * 0.3,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SearchFood()));
+            },
+            child: Card(
+              shadowColor: Colors.black,
+              child: Card(
+                shadowColor: Colors.black,
+                child: Container(
+                  color: thirdColor,
+                  width: w * 0.8,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.fire,
+                        color: black,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        height: h * 0.02,
+                      ),
+                      const Text(
+                        "check Nutrients",
+                        style: TextStyle(color: primary, fontSize: 22),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-      ),
-    ),
-        ),
-        
-        Container(
-          margin: const EdgeInsets.only(top:10.0),
-          padding: const EdgeInsets.all(8.0),
-          height:h * 0.15,
-          child: activityList("Water Reminder",(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const WaterReminder()));
-          },const FaIcon(FontAwesomeIcons.glassWhiskey,color: black,),const Icon(
-              Icons.add,
-              color: Colors.black,
-          )),
-        ),
-
-        Container(
-          margin: const EdgeInsets.only(top:10.0),
-          padding: const EdgeInsets.all(8.0),
-          height:h * 0.15,
-          child: activityList("Sleep Tracker",(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MyStepCounter()));
-          },const FaIcon(FontAwesomeIcons.calendarDay,color:black),const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-          )),
-        ),
-
-        Container(
-          margin: const EdgeInsets.only(top:10.0),
-          padding: const EdgeInsets.all(8.0),
-          height:h * 0.15,
-          child: activityList("Nutrition Tracker",(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFood()));
-          },const FaIcon(FontAwesomeIcons.fire,color: black,),const Icon(
-              Icons.add,
-              color: Colors.black,
-          )),
+          ),
         ),
       ],
     );
   }
-
-  GestureDetector activityList(String activityName,Function()? onTap,FaIcon? icon,Icon trailIcon) {
-    
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        shadowColor: Colors.black,
-            child: Center(
-              child: ListTile(
-          
-          leading: icon,
-          title: Text(activityName),
-          subtitle: const Text('0'),
-          trailing: trailIcon,
-        ),
-            ),
-      ),
-    );
-  }
 }
-

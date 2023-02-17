@@ -1,24 +1,37 @@
-// ignore_for_file: unnecessary_cast
 
 import 'dart:io';
 
-import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
-class ProfileWidget extends StatelessWidget {
-  final String imagePath;
+class ProfileWidget extends StatefulWidget {
+ // final String imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
 
   const ProfileWidget({
     Key? key,
-    required this.imagePath,
+   // required this.imagePath,
     this.isEdit = false,
     required this.onClicked,
   }) : super(key: key);
 
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+ 
+  AuthController authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    
+    super.initState();
+    authController.getUserInfo();
+  }
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
@@ -30,31 +43,10 @@ class ProfileWidget extends StatelessWidget {
      
       child: Center(
         child: Stack(children: [
-          buildCircle(child: buildImage(), all: 4, color: primary),
-         
-          Positioned(bottom: 0, right: 4, child: buildEditIcon(color)),
+         buildCircle(child: buildProfileTile(widget.onClicked), all: 4, color: Colors.orange),
+      
+          Positioned(bottom: 0, right: 0, child: buildEditIcon(color)),
         ]),
-      ),
-    );
-  }
-
-  Widget buildImage() {
-    final  image = imagePath.contains('https://')
-        ? NetworkImage(imagePath)
-        : imagePath.contains('assets/')  ? AssetImage(imagePath) as ImageProvider : FileImage(File(imagePath)); 
-       
-    return ClipOval(
-      child: Material(
-        color: Colors.transparent,
-        child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 130,
-          height: 130,
-          child: InkWell(
-            onTap: onClicked,
-          ),
-        ),
       ),
     );
   }
@@ -66,7 +58,7 @@ class ProfileWidget extends StatelessWidget {
           color: color,
           all: 8,
           child: Icon(
-            isEdit ? Icons.add_a_photo : Icons.edit,
+            widget.isEdit ? Icons.add_a_photo : Icons.edit,
             color: Colors.white,
             size: 20,
           ),
@@ -85,4 +77,40 @@ class ProfileWidget extends StatelessWidget {
           child: child,
         ),
       );
+
+///////////////////////
+///
+/// 
+///  NEW WIDGET
+ Widget buildProfileTile(Function() ontap) {
+ 
+ 
+    return GestureDetector(
+      onTap: ontap,
+      child: Obx(() => authController.myUser.value.email == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          :
+              Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: authController.myUser.value.profileImage == null
+                        ? DecorationImage(
+                            image: AssetImage('assets/images/app_logo.png') ,
+                            fit: BoxFit.fill)
+                        : DecorationImage(
+                            image: NetworkImage(
+                                authController.myUser.value.profileImage!),
+                            fit: BoxFit.fill)),
+              ),
+        
+          ),
+    );
+  }
+
 }
+
+
