@@ -104,20 +104,23 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 Text(
                   isProviderGoogle ? "Welcome, ${AuthController.instance.auth.currentUser!.displayName!.capitalizeFirst}" : "Welcome, ${AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@'))}",
-                  style: const TextStyle(color: black, fontWeight: FontWeight.w600,fontSize: 15),
+                  style: const TextStyle(color: black, fontWeight: FontWeight.w600,fontSize: 17),
                 ),
               ],
             ),
           ),
 
           GestureDetector(
+           
             onTap: () {
               // call function to view menu bar with options like [help,settings,about]
+              
               AuthController.instance.logOut();
             },
             child: const Icon(
-              Icons.logout,
+              Icons.power_settings_new,
               size: 30.0,
+              color: primary,
             ),
           )
         ],

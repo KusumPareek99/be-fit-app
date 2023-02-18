@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:be_fit_app/main.dart';
 import 'package:be_fit_app/model/user_model.dart';
 import 'package:be_fit_app/screens/curved_nav_bar.dart';
 import 'package:be_fit_app/screens/home/home_page.dart';
 import 'package:be_fit_app/screens/login_screen.dart';
+import 'package:be_fit_app/screens/onboarding_screen.dart';
 import 'package:be_fit_app/screens/profile/edit_profile.dart';
 import 'package:be_fit_app/screens/profile/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,6 +59,10 @@ class AuthController extends GetxController {
   }
 
   _initialScreen(User? user) async {
+    if(initScreen == null || initScreen==0){
+      Get.offAll(() => OnboardingPage());
+      return;
+    }
     if(user==null){
       print("initial screen...redirecting to login page");
         Get.offAll(() => LoginPage());

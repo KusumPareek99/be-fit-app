@@ -86,32 +86,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             CustomAppBar(),
             ActivityList(),
-          //   GestureDetector(
-          //     onTap: () {
-          //       AuthController.instance.logOut();
-          //     },
-          //     child: Center(
-          //       child: Container(
-          //         width: w * 0.62,
-          //         height: h * 0.08,
-          //         decoration: BoxDecoration(
-          //             borderRadius: BorderRadius.circular(30),
-          //             image: const DecorationImage(
-          //                 image: AssetImage("assets/images/loginbtn.png"),
-          //                 fit: BoxFit.cover)),
-          //         child: const Center(
-          //           child: Text(
-          //             "LOG OUT",
-          //             style: TextStyle(
-          //               fontSize: 20,
-          //               color: Colors.white,
-          //               fontWeight: FontWeight.w600,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
+         
            ],
         ),
       ),

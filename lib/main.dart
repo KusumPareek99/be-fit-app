@@ -30,9 +30,10 @@ Future<void> main() async {
    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 LocalNotificationService.initialize();
 
-SharedPreferences preferences = await SharedPreferences.getInstance();
-initScreen = preferences.getInt('initScreen');
-await preferences.setInt('initScreen',1);
+SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
+  print('initScreen ${initScreen}');
 
   runApp(const MyApp());
 }
@@ -51,11 +52,11 @@ class MyApp extends StatelessWidget {
        primarySwatch: Colors.orange
         
       ),
-     initialRoute: initScreen == 0 || initScreen == null ? 'onboarding' : 'login' ,
+     initialRoute: initScreen == 0 || initScreen == null ? 'onboarding' : '/' ,
       //home: OnboardingPage(),
       routes: {
-        'login':(p0) => LoginPage(),
-        'onboarding' : (p0) => OnboardingPage(),
+        '/':(context) => LoginPage(),
+        'onboarding' : (context) => OnboardingPage(),
       },
     );
   }

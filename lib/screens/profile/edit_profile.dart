@@ -244,7 +244,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             
                             TextFieldWidget(
-                                'Height',
+                                'Height(in cms)',
                                 Icons.height,
                                 TextInputType.number,
                                 heightController,
@@ -259,7 +259,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               height: 10,
                             ),
                             TextFieldWidget(
-                                'Weight',
+                                'Weight (in cms)',
                                 Icons.calculate_outlined,
                                 TextInputType.number,
                                 weightController,
