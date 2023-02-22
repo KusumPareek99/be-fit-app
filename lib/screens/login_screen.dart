@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
+            
             children: [
               SizedBox(
                 height: h * 0.01,
@@ -57,18 +58,20 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                   width: w,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(width: w, height: h * 0.15, child: TopBar()),
-                      Container(
-                          width: w,
-                          height: h * 0.2,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/undraw_Meditation_Pink.png"),
-                                  fit: BoxFit.cover))),
-                      const Center(
+                      SizedBox(width: w, height: h * 0.17, child: TopBar()),
+                      ClipOval(
+                        child: Container(
+                            width: w * 0.5,
+                            height: h * 0.20,
+                            decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/logo-whiteBg.png"),
+                                    fit: BoxFit.cover))),
+                      ),
+                      Center(
                         child: Text(
                           "Be.Fit.",
                           style: TextStyle(
@@ -97,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                           controller: emailController,
                           decoration: InputDecoration(
                               hintText: "Email ID",
-                              prefixIcon: const Icon(Icons.email_outlined,
-                                  color: primary),
+                              prefixIcon:
+                                  Icon(Icons.email_outlined, color: primary),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: const BorderSide(
@@ -133,8 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                           focusNode: textFieldFocusNode,
                           decoration: InputDecoration(
                               hintText: "Password",
-                              prefixIcon: const Icon(Icons.password_outlined,
-                                  color: primary),
+                              prefixIcon:
+                                  Icon(Icons.password_outlined, color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenPassword
                                     ? const Icon(Icons.visibility_off_outlined)
@@ -168,10 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                                 return const ForgotPasswordPage();
                               }));
                             },
-                            child: const Text(
+                            child: Text(
                               "Forgot your Password?",
-                              style: TextStyle(
-                                  fontSize: 15, color: primary),
+                              style: TextStyle(fontSize: 15, color: primary),
                             ),
                           ),
                         ],
@@ -181,32 +183,51 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: h * 0.02,
               ),
-              GestureDetector(
-                onTap: () {
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 82,
+                    vertical: 13,
+                  ),
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600, color: white),
+                ),
+                onPressed: () {
                   AuthController.instance.login(emailController.text.trim(),
                       passwordController.text.trim());
                   hideKeyboard(context);
                 },
-                child: Container(
-                  width: w * 0.62,
-                  height: h * 0.07,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/loginbtn.png"),
-                          fit: BoxFit.cover)),
-                  child: const Center(
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
               ),
+              // GestureDetector(
+              //   onTap: () {
+              //     AuthController.instance.login(emailController.text.trim(),
+              //         passwordController.text.trim());
+              //     hideKeyboard(context);
+              //   },
+              //   child: Container(
+              //     width: w * 0.62,
+              //     height: h * 0.07,
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(8),
+              //         image: const DecorationImage(
+              //             image: AssetImage("assets/images/loginbtn.png"),
+              //             fit: BoxFit.cover)),
+              //     child: const Center(
+              //       child: Text(
+              //         "Login",
+              //         style: TextStyle(
+              //           fontSize: 20,
+              //           color: Colors.white,
+              //           fontWeight: FontWeight.w600,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: h * 0.01,
               ),
@@ -249,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextSpan(
                           text: "Create",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             color: primary,
                             fontWeight: FontWeight.bold,

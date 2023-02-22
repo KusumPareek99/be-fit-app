@@ -31,99 +31,102 @@ class _CustomAppBarState extends State<CustomAppBar> {
     bool isProviderGoogle = provider=='google.com' ? true : false ;
     Size size = MediaQuery.of(context).size;
 
-    return  Padding(
-      padding: const EdgeInsets.only(left: 20.0,right: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(email: FirebaseAuth.instance.currentUser!.email!) ));
-            },
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(appPadding / 8),
-                  child: Obx( (() => authController.myUser.value.profileImage == null 
-                  ?  Container(
-                    decoration: const BoxDecoration(
-                      color: primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(appPadding / 20),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(appPadding / 8),
-                          child: Center(
-                            child: CircleAvatar(
-                              backgroundImage:isProviderGoogle ? NetworkImage(AuthController.instance.auth.currentUser!.photoURL!) :   const AssetImage('assets/images/app_logo.png') as ImageProvider, 
-                             
-                              
+    return  Container(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0,right: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(email: FirebaseAuth.instance.currentUser!.email!) ));
+              },
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(appPadding / 8),
+                    child: Obx( (() => authController.myUser.value.profileImage == null 
+                    ?  Container(
+                      decoration:  BoxDecoration(
+                        color: primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(appPadding / 20),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(appPadding / 8),
+                            child: Center(
+                              child: CircleAvatar(
+                                backgroundImage:isProviderGoogle ? NetworkImage(AuthController.instance.auth.currentUser!.photoURL!) :   const AssetImage('assets/images/app_logo.png') as ImageProvider, 
+                               
+                                
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    )
+                  :  Container(
+                      decoration:  BoxDecoration(
+                        color: primary,
+                       
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(appPadding / 20),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(appPadding / 8),
+                            child: Center(
+                              child: CircleAvatar(
+                                backgroundImage:NetworkImage(authController.myUser.value.profileImage!), 
+                               
+                                
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   )
-                :  Container(
-                    decoration: const BoxDecoration(
-                      color: primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(appPadding / 20),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(appPadding / 8),
-                          child: Center(
-                            child: CircleAvatar(
-                              backgroundImage:NetworkImage(authController.myUser.value.profileImage!), 
-                             
-                              
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                )
-             
-                  ))
-                     ),
-                SizedBox(
-                  width: size.width * 0.01,
-                ),
-                Text(
-                  isProviderGoogle ? "Welcome, ${AuthController.instance.auth.currentUser!.displayName!.capitalizeFirst}" : "Welcome, ${AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@'))}",
-                  style: const TextStyle(color: black, fontWeight: FontWeight.w600,fontSize: 17),
-                ),
-              ],
+               
+                    ))
+                       ),
+                  SizedBox(
+                    width: size.width * 0.01,
+                  ),
+                  Text(
+                    isProviderGoogle ? "Welcome, ${AuthController.instance.auth.currentUser!.displayName!.capitalizeFirst}" : "Welcome, ${AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')).capitalizeFirst}",
+                    style: const TextStyle(color: black, fontWeight: FontWeight.w600,fontSize: 17),
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          GestureDetector(
-           
-            onTap: () {
-              // call function to view menu bar with options like [help,settings,about]
-              
-              AuthController.instance.logOut();
-            },
-            child: const Icon(
-              Icons.power_settings_new,
-              size: 30.0,
-              color: primary,
-            ),
-          )
-        ],
+            GestureDetector(
+             
+              onTap: () {
+                // call function to view menu bar with options like [help,settings,about]
+                
+                AuthController.instance.logOut();
+              },
+              child:  Icon(
+                Icons.logout_outlined,
+                size: 30.0,
+                color: primary,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

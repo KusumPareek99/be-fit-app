@@ -88,7 +88,7 @@ class _RadialProgressState extends State<RadialProgress> with SingleTickerProvid
               Container(
                 height: 5.0,
                 width: 80.0,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                     color: primary,
                     borderRadius: BorderRadius.all(Radius.circular(4.0))),
               ),
@@ -123,8 +123,8 @@ class _RadialProgressState extends State<RadialProgress> with SingleTickerProvid
               Container(
                 height: 5.0,
                 width: 80.0,
-                decoration: const BoxDecoration(
-                    color: primary,
+                decoration:  BoxDecoration(
+                    color: Color(0xFF379634),
                     borderRadius: BorderRadius.all(Radius.circular(4.0))),
               ),
               const SizedBox(
@@ -159,8 +159,8 @@ class RadialPainter extends CustomPainter {
     canvas.drawCircle(center, size.width / 2, paint);
 
     Paint progressPaint = Paint()
-      ..shader = const LinearGradient(
-              colors: [primary, secondary, Color.fromARGB(255, 210, 59, 112)])
+      ..shader =  LinearGradient(
+              colors: [Color(0xFF79D076), Color(0xFF4DC149), Color(0xFF379634)])
           .createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class BmiPage extends StatelessWidget {
-  const BmiPage({super.key});
+  const  BmiPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class BmiPage extends StatelessWidget {
                SizedBox(
                 height: size.height*0.1,
              ),
-             Text("BMI",  style: const TextStyle(color: primary, fontSize: 30)),
+             Text("BMI Chart",  style:  TextStyle(color: Color(0xFFE18335), fontSize: 30)),
              SizedBox(
                 height: size.height*0.2,
              ),

@@ -28,7 +28,7 @@ class _AllCoursesState extends State<AllCourses> {
   callApi() async {
     try {
       videoResult = await yt.search(
-          "10 minute daily yoga "); //searching for videos related to 10 minute daily yoga
+          "guided yoga + 10 minute + daily exercise"); //searching for videos related to 10 minute daily yoga
       print(videoResult); //logging results in console
       setState(() {
         isLoaded = true; //setting content as loaded
@@ -58,12 +58,12 @@ class _AllCoursesState extends State<AllCourses> {
           children: [
             CustomAppBar(),
             SizedBox(height: size.height * 0.02),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(left: appPadding * 2),
               child: Text(
-                'All Courses',
+                'Yoga and Asanas',
                 style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.w600, color: primary),
+                    fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFFE18335)),
               ),
             ),
             isLoaded

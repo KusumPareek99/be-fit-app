@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
-import 'package:be_fit_app/service/user_repository.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController heightController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   String selectedGender = "";
-  final userRepoController = Get.put(UserRepository());
+ // final userRepoController = Get.put(UserRepository());
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AuthController authController = Get.find<AuthController>();
@@ -48,20 +49,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  String defaultImage() {
-    if (isProviderGoogle) {
-      return AuthController.instance.auth.currentUser!.photoURL!;
-    } else {
-      return 'assets/images/app_logo.png';
-    }
-  }
+  // String defaultImage() {
+  //   if (isProviderGoogle) {
+  //     return AuthController.instance.auth.currentUser!.photoURL!;
+  //   } else {
+  //     return 'assets/images/app_logo.png';
+  //   }
+  // }
 
 
 
   @override
   void initState() {
     super.initState();
-  
+    //authController.getUserInfo();
     selectedGender = authController.myUser.value.gender ?? "";
     nameController.text = authController.myUser.value.name??"";
     dateController.text = authController.myUser.value.dob ??"";
@@ -172,9 +173,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 controller: dateController,
                                 style: const TextStyle(fontSize: 14),
                                 decoration: InputDecoration(
-                                    prefixIcon: const Icon(
+                                    prefixIcon:  Icon(
                                         Icons.calendar_month_outlined,
-                                        color: Colors.orange),
+                                        color: primary),
                                     filled: true,
                                     fillColor: Colors.white,
                                     border: OutlineInputBorder(
@@ -259,7 +260,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               height: 10,
                             ),
                             TextFieldWidget(
-                                'Weight (in cms)',
+                                'Weight (in kg)',
                                 Icons.calculate_outlined,
                                 TextInputType.number,
                                 weightController,
@@ -285,7 +286,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                                     if (selectedImage.toString().contains('http') || selectedImage.toString().isEmpty) {
                                    
-                                      Get.snackbar('Warning', 'Please choose your profile again.');
+                                      Get.snackbar('Warning','Please Choose your profile again' ,
+                                      backgroundColor: secondary,
+                                      titleText: Text('Warning', style: TextStyle(color: Colors.redAccent,fontSize: 20,fontWeight: FontWeight.bold),),
+                                       messageText: Text('Please choose your profile again.',style: TextStyle(fontSize: 15)));
                                      return;
                                     }
                                     
@@ -299,7 +303,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         heightController.text.trim(),
                                         weightController.text.trim());
 
-                                   Get.snackbar('Message','Details saved successfully');
+                                   
+                                   Get.snackbar('Message','Details saved successfully' ,
+                                  
+                                      titleText: Text('Message', style: TextStyle(color: Colors.green,fontSize: 20,fontWeight: FontWeight.bold),),
+                                       messageText: Text('Details saved successfully.',style: TextStyle(fontSize: 15)));
+                                    
                                   })),
                           ],
                         ),
@@ -351,7 +360,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 padding: const EdgeInsets.only(left: 10),
                 child: Icon(
                   iconData,
-                  color: Colors.orange,
+                  color: primary,
                 ),
               ),
               border: InputBorder.none,
@@ -367,7 +376,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       minWidth: Get.width,
       height: 50,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      color: Colors.orange,
+      color: primary,
       onPressed: () => onPressed(),
       child: Text(
         title,

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,7 +44,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
      
       child: Center(
         child: Stack(children: [
-         buildCircle(child: buildProfileTile(widget.onClicked), all: 4, color: Colors.orange),
+         buildCircle(child: buildProfileTile(widget.onClicked), all: 4, color: primary),
       
           Positioned(bottom: 0, right: 0, child: buildEditIcon(color)),
         ]),

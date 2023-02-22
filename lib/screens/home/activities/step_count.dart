@@ -174,7 +174,7 @@ class _MyStepCounterState extends State<MyStepCounter> {
                     margin: const EdgeInsets.only(left: 10, right: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(7),
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 8,
@@ -197,25 +197,37 @@ class _MyStepCounterState extends State<MyStepCounter> {
                           hintText: "Daily Target",
                           
                           prefixIcon: Icon(LineAwesomeIcons.bullseye,
-                              color: Color(0xFFF58434)),
+                              color: Color(0xFF379634)),
                           
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(7),
                               borderSide: const BorderSide(
                                   color: Colors.white, width: 1.0)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(7),
                               borderSide: const BorderSide(
                                   color: Colors.white, width: 1.0)),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12))),
+                              borderRadius: BorderRadius.circular(7))),
                     ),
                   ),
+                 ElevatedButton(
                 
-                  GestureDetector(
-                    onTap: ()async {
-            
-                     if (stepTargetController.text.trim().isEmpty){
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF379634),
+                
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 14,
+                  ),
+                ),
+                child: const Text(
+                  'Set',
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600, color: white),
+                ),
+                onPressed: ()async {
+                   if (stepTargetController.text.trim().isEmpty){
                       return;
                      } 
                      
@@ -227,36 +239,55 @@ class _MyStepCounterState extends State<MyStepCounter> {
                      setState(() {
                        authController.getUserInfo();
                      });
+                  hideKeyboard(context);
+                },
+              ),
+                  // GestureDetector(
+                  //   onTap: ()async {
+            
+                  //    if (stepTargetController.text.trim().isEmpty){
+                  //     return;
+                  //    } 
+                     
+                  //    targetval = double.parse(stepTargetController.text.trim());  
+                  //    targetval < 1 
+                  //    ? targetval = 1000
+                  //    : authController.setDailyTarget(targetval); 
+                  //     stepTargetController.text="";
+                  //    setState(() {
+                  //      authController.getUserInfo();
+                  //    });
                    
                          
-                    },
-                    child: Container(
-                      width: w * 0.32,
-                      height: h * 0.07,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: const DecorationImage(
-                              image: AssetImage("assets/images/loginbtn.png"),
-                              fit: BoxFit.cover)),
-                      child: const Center(
-                        child: Text(
-                          "Set",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  //   },
+                  //   child: Container(
+                  //     width: w * 0.32,
+                  //     height: h * 0.07,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //         image: const DecorationImage(
+                  //             image: AssetImage("assets/images/loginbtn.png"),
+                  //             fit: BoxFit.cover)),
+                  //     child: const Center(
+                  //       child: Text(
+                  //         "Set",
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //           color: Colors.white,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+               
                 ],
               ),
         
               SizedBox(
-                height: h * 0.03,
+                height: h * 0.05,
               ),
-               Obx((() => authController.myUser.value.daily_target==null ?  const Text("Your set target will be displayed here.") : Text(authController.myUser.value.daily_target.toString()))),
+               Obx((() =>  authController.myUser.value.daily_target==null ?  const Text("Your set target will be displayed here.") : Text("Your daily target : ${authController.myUser.value.daily_target}"))),
    SizedBox(
                 height: h * 0.03,
               ),
@@ -281,7 +312,8 @@ class _MyStepCounterState extends State<MyStepCounter> {
                           final stepsUser = snapshot.data;
                           return Text(
                             stepsUser.toString(),
-                            style: const TextStyle(fontSize: 60),
+                            style: const TextStyle(fontSize: 60,color: Color(0xFF1D8F00)),
+
                           );
                         }
                       },

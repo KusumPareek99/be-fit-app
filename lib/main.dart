@@ -19,7 +19,7 @@ int? initScreen;
 
 Future<void> main() async {
 // to hide the upper bar of system ui
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
     statusBarColor: primary,
   ));
 
@@ -33,7 +33,7 @@ LocalNotificationService.initialize();
 SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
-  print('initScreen ${initScreen}');
+  print('Main initScreen ${initScreen}');
 
   runApp(const MyApp());
 }

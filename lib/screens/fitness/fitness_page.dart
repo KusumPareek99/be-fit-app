@@ -3,8 +3,6 @@
 import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/screens/fitness/components/courses.dart';
 import 'package:be_fit_app/screens/fitness/components/diff_styles.dart';
-
-import 'package:be_fit_app/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 

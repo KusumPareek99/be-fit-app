@@ -1,7 +1,7 @@
 
 import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/model/food_model.dart';
-import 'package:be_fit_app/widgets/custom_appbar.dart';
+
 import 'package:flutter/material.dart';
 
 

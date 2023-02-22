@@ -28,7 +28,7 @@ class _AllYogaPosesState extends State<AllYogaPoses> {
   callApi() async {
     try {
       videoResult = await yt.search(
-          "yoga poses for daily exercise 10 minute"); //searching for videos related to 10 minute daily yoga
+          "meditation music + om chanting +  relaxing music +10 minutes"); //searching for videos related to 10 minute daily yoga
       print(videoResult); //logging results in console
       setState(() {
         isLoaded = true; //setting content as loaded
@@ -58,12 +58,12 @@ class _AllYogaPosesState extends State<AllYogaPoses> {
           children: [
             CustomAppBar(),
             SizedBox(height: size.height * 0.02),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(left: appPadding * 2),
               child: Text(
-                'Yoga Poses',
+                'Relax your Mind',
                 style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.w600, color: primary),
+                    fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFFE18335)),
               ),
             ),
             isLoaded

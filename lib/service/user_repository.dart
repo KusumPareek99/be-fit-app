@@ -16,9 +16,11 @@ class UserRepository extends GetxController{
 
   // Store data in firebase
   createUser(UserModel user) async{
+    print("Creste user in user repo");
      try{
-      print(user.id! + " " + user.email!);
-        await _db.doc(user.id).set(user.toJson());
+      //print(user.id! + " " + user.email!);
+        await _db.doc(FirebaseAuth.instance.currentUser!.uid).set(user.toJson());
+        print("User created");
      }catch (e){
       return e.toString() ;
      }

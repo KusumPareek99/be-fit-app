@@ -24,7 +24,7 @@ class _DiffStylesState extends State<DiffStyles> {
   callApi() async {
     try {
       videoResult = await yt.search(
-          "yoga poses for daily exercise 10 minute"); //searching for videos related to 10 minute daily yoga
+          "meditation music + om chanting +  relaxing music +10 minutes"); //searching for videos related to 10 minute daily yoga
       print(videoResult); //logging results in console
       setState(() {
         isLoaded = true; //setting content as loaded
@@ -163,7 +163,7 @@ class _DiffStylesState extends State<DiffStyles> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Yoga Poses',
+                'Mindfulness',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -177,7 +177,7 @@ class _DiffStylesState extends State<DiffStyles> {
                         MaterialPageRoute(
                             builder: (context) => const AllYogaPoses()));
                   },
-                  child: const Text(
+                  child:  Text(
                     'See All',
                     style: TextStyle(
                         fontSize: 18,

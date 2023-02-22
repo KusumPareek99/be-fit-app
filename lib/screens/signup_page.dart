@@ -2,6 +2,7 @@ import 'package:be_fit_app/constants/const.dart';
 import 'package:be_fit_app/model/user_model.dart';
 import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:be_fit_app/service/user_repository.dart';
+
 import 'package:be_fit_app/widgets/top_bar.dart';
 
 import 'package:flutter/gestures.dart';
@@ -80,14 +81,14 @@ class _SignUpPageState extends State<SignUpPage> {
         // String profileImage = isProviderGoogle
         //     ? AuthController.instance.auth.currentUser!.photoURL!
         //     : 'assets/images/screen/app_logo.png';
-        //  userRepo.createUser(user);
-        Get.snackbar('Sign Up Success', 'Message : ',
-          backgroundColor: Colors.green,
-          snackPosition: SnackPosition.BOTTOM,
-          titleText: const Text(
-            "Data stored successfully!",
-            style: TextStyle(color: Colors.white),
-          ));
+        
+          userRepo.createUser(user);
+          print("USER CREATED IN FIREStore...");
+           Get.snackbar('Sign Up Success','Registered successfully!' ,
+                                      backgroundColor: secondary,
+                                      titleText: Text('Sign Up Success', style: TextStyle(color: Colors.green,fontSize: 20,fontWeight: FontWeight.bold),),
+                                       messageText: Text('Registered successfully!.',style: TextStyle(fontSize: 15)));
+                                    
         //  addUserDetails(
         //     emailController.text.trim(),
         //      nameController.text.trim(),
@@ -95,13 +96,12 @@ class _SignUpPageState extends State<SignUpPage> {
         //     );
       }
     } else {
-      Get.snackbar('Password Match', 'message',
-          backgroundColor: Colors.redAccent,
-          snackPosition: SnackPosition.BOTTOM,
-          titleText: const Text(
-            "Confirm Password and Password does not match",
-            style: TextStyle(color: Colors.white),
-          ));
+     
+           Get.snackbar('Check your password','Confirm Password and Password does not match' ,
+                                      backgroundColor: secondary,
+                                      titleText: Text('Check your password', style: TextStyle(color: Colors.redAccent,fontSize: 20,fontWeight: FontWeight.bold),),
+                                       messageText: Text('Confirm Password and Password does not match.',style: TextStyle(fontSize: 15)));
+                                    
     }
   }
 
@@ -167,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               hintStyle: const TextStyle(
                                 fontSize: 15,
                               ),
-                              prefixIcon: const Icon(Icons.email_outlined,
+                              prefixIcon:  Icon(Icons.email_outlined,
                                   color: primary),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -206,7 +206,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: InputDecoration(
                               hintText: "Password",
                               hintStyle: const TextStyle(fontSize: 15),
-                              prefixIcon: const Icon(Icons.lock_outline,
+                              prefixIcon:  Icon(Icons.lock_outline,
                                   color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenPassword
@@ -252,7 +252,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: InputDecoration(
                               hintText: "Confirm Password",
                               hintStyle: const TextStyle(fontSize: 15),
-                              prefixIcon: const Icon(Icons.lock_outline,
+                              prefixIcon:  Icon(Icons.lock_outline,
                                   color: primary),
                               suffixIcon: IconButton(
                                 icon: isHiddenConfirmPassword
@@ -286,34 +286,56 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: h * 0.04,
               ),
-              GestureDetector(
-                onTap: ()  {
+                     ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 80,
+                    vertical: 13,
+                  ),
+                ),
+                child: const Text(
+                  'Sign Up',
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600, color: white),
+                ),
+                onPressed: () {
                   final user = UserModel(
                  
                         email: emailController.text.trim());
                     signUp(user);
-                 
+                  hideKeyboard(context);
                 },
-                child: Container(
-                  width: w * 0.62,
-                  height: h * 0.07,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/loginbtn.png"),
-                          fit: BoxFit.cover)),
-                  child: const Center(
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
               ),
+              // GestureDetector(
+              //   onTap: ()  {
+              //     final user = UserModel(
+                 
+              //           email: emailController.text.trim());
+              //       signUp(user);
+                 
+              //   },
+              //   child: Container(
+              //     width: w * 0.62,
+              //     height: h * 0.07,
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(8),
+              //         image: const DecorationImage(
+              //             image: AssetImage("assets/images/loginbtn.png"),
+              //             fit: BoxFit.cover)),
+              //     child: const Center(
+              //       child: Text(
+              //         "Sign Up",
+              //         style: TextStyle(
+              //           fontSize: 18,
+              //           color: Colors.white,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+             
               SizedBox(
                 height: h * 0.01,
               ),
@@ -359,7 +381,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       TextSpan(
                         text: "Login",
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: 15,
                           color: primary,
                           fontWeight: FontWeight.bold,

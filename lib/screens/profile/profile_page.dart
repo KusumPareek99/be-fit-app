@@ -4,6 +4,8 @@ import 'package:be_fit_app/service/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../constants/const.dart';
+
 
 
 class ProfilePage extends StatefulWidget {
@@ -16,7 +18,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-     AuthController authController = Get.find<AuthController>();
+    // AuthController authController = Get.find<AuthController>();
 
     static var arr = AuthController.instance.auth.currentUser!.providerData;
     static bool isProviderGoogle = arr[0].providerId == 'google.com' ? true : false;
@@ -61,8 +63,8 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
                 height: h*0.02,
               ),
-              Text( isProviderGoogle ?  AuthController.instance.auth.currentUser!.displayName! :  AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')) ,
-              style: const TextStyle(color: Colors.pink, fontWeight: FontWeight.w600,fontSize: 22),
+              Text( isProviderGoogle ? "Welcome, ${AuthController.instance.auth.currentUser!.displayName!}" : "Welcome, ${AuthController.instance.auth.currentUser!.email!.substring(0, AuthController.instance.auth.currentUser!.email!.indexOf('@')).capitalizeFirst!}" ,
+              style:  TextStyle(color: Color(0xFFE18335), fontWeight: FontWeight.w500,fontSize: 22),
               ),
          
               SizedBox(
@@ -72,33 +74,51 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: h*0.2,
               ),
-            GestureDetector(
-              onTap:(){
-                 AuthController.instance.logOut();
-                
-              } ,
-              child: Center(
-                child: Container(
-                  width: w * 0.62,
-                  height: h * 0.08,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/loginbtn.png"),
-                          fit: BoxFit.cover)),
-                  child: const Center(
-                    child: Text(
-                      "LOG OUT",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 82,
+                    vertical: 13,
                   ),
                 ),
+                child: const Text(
+                  'Log Out',
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600, color: white),
+                ),
+                onPressed: () {
+                   AuthController.instance.logOut();
+               
+                },
               ),
-            ),
+            // GestureDetector(
+            //   onTap:(){
+            //      AuthController.instance.logOut();
+                
+            //   } ,
+            //   child: Center(
+            //     child: Container(
+            //       width: w * 0.62,
+            //       height: h * 0.08,
+            //       decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(10),
+            //           image: const DecorationImage(
+            //               image: AssetImage("assets/images/loginbtn.png"),
+            //               fit: BoxFit.cover)),
+            //       child: const Center(
+            //         child: Text(
+            //           "LOG OUT",
+            //           style: TextStyle(
+            //             fontSize: 20,
+            //             color: Colors.white,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
          
           ],
           )

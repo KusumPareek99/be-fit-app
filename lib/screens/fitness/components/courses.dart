@@ -25,7 +25,7 @@ class _CoursesState extends State<Courses> {
   callApi() async {
     try {
       videoResult = await yt.search(
-          "10 minute daily yoga "); //searching for videos related to 10 minute daily yoga
+          "guided yoga + 10 minute + daily exercise"); //searching for videos related to 10 minute daily yoga
       print(videoResult); //logging results in console
       setState(() {
         isLoaded = true; //setting content as loaded
@@ -59,7 +59,7 @@ class _CoursesState extends State<Courses> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Courses',
+                  'Yoga',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class _CoursesState extends State<Courses> {
                             builder: (context) => const AllCourses()),
                       );
                     }),
-                    child: const Text(
+                    child:  Text(
                       'See All',
                       style: TextStyle(
                           fontSize: 18,

@@ -17,6 +17,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 
 import 'package:path/path.dart' as Path;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthController extends GetxController {
@@ -60,9 +61,11 @@ class AuthController extends GetxController {
 
   _initialScreen(User? user) async {
     if(initScreen == null || initScreen==0){
+      print("initial screen...redirecting to onboarding page");
       Get.offAll(() => OnboardingPage());
       return;
     }
+    
     if(user==null){
       print("initial screen...redirecting to login page");
         Get.offAll(() => LoginPage());
@@ -101,6 +104,11 @@ class AuthController extends GetxController {
   }
 
   void login(String email, password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
+  print('initScreen ${initScreen}');
+
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Get.snackbar(
