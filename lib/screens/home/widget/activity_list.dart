@@ -25,7 +25,7 @@ class _ActivityListState extends State<ActivityList> {
   @override
   void initState() {
     super.initState();
-    authController.getUserInfo();
+   // authController.getUserInfo();
   }
 
   @override

@@ -20,7 +20,7 @@ class _SearchFoodState extends State<SearchFood> {
         backgroundColor: primary,
         iconTheme: IconThemeData(color: white),
         title: const Text(
-          "Demo Search",
+          "Search Nutrients",
           style: TextStyle(color: white),
         ),
         actions: [
